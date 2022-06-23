@@ -44,9 +44,10 @@
 #define ADD_FSOBC
 #define ADD_M2OBC
 
-#define ANA_SMFLUX
-#define ANA_STFLUX
-#define ANA_SSFLUX
+/* undefine analytical surface fluxes */
+#undef ANA_SMFLUX
+#undef ANA_STFLUX
+#undef ANA_SSFLUX
 #define ANA_BTFLUX
 #define ANA_BSFLUX
 
