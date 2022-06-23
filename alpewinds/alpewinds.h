@@ -31,9 +31,9 @@
 #define MASKING
 #define SPHERICAL
 /* turn on atmospheric forcing */
-#define SOLAR_SOURCE
+#undef SOLAR_SOURCE
 #define BULK_FLUXES
-#define LONGWAVE_OUT
+#undef LONGWAVE_OUT
 /*  */
 #define DEFLATE
 #define HDF5
