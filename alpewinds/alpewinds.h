@@ -34,6 +34,7 @@
 #define SOLAR_SOURCE
 #define BULK_FLUXES
 #define LONGWAVE_OUT
+#define EMINUSP
 /*  */
 #define DEFLATE
 #define HDF5
