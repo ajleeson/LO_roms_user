@@ -42,21 +42,6 @@
 #define ANA_BTFLUX
 #define ANA_BSFLUX
 
-// /* LiveOcean bio choices */
-// #define BIO_FENNEL
-// #ifdef BIO_FENNEL
-// #  define BIO_SEDIMENT
-// #  define DENITRIFICATION
-// #  undef RIVER_DON
-// #  define OXYGEN
-// #  define CARBON
-// #  define pCO2_RZ
-// #  define PCO2AIR_SECULAR
-// #  define TALK_NONCONSERV
-// #  define ANA_SPFLUX
-// #  define ANA_BPFLUX
-// #endif
-
 #define GLS_MIXING
 #if defined GLS_MIXING
 # define CANUTO_A
