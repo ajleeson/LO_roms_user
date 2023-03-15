@@ -77,10 +77,11 @@
 # define DIAGNOSTICS_BIO
 #endif
 
+#define PERFECT_RESTART
 #ifdef PERFECT_RESTART
 # undef  AVERAGES
 # undef  DIAGNOSTICS_BIO
 # undef  DIAGNOSTICS_TS
 # undef  DIAGNOSTICS_UV
-# define OUT_DOUBLE
+# undef  OUT_DOUBLE
 #endif
