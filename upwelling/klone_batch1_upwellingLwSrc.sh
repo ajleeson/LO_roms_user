@@ -15,17 +15,12 @@
 ## Memory per node
 #SBATCH --mem=128G
 
-echo "Hello 0"
-
 module purge
 module load intel/oneAPI
 NFDIR=/gscratch/macc/local/netcdf-ifort/
 export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
 
-echo "Hello 1"
-
 RUN_DIR=/mmfs1/gscratch/macc/auroral/LO_roms_user/upwelling
-mpirun -np 4 $RUN_DIR/romsM $RUN_DIR/roms_upwelling_LwSrc.in > $RUN_DIR/roms_log_LwSrc.txt
+mpirun -np 4 $RUN_DIR/romsM $RUN_DIR/basecase.in > $RUN_DIR/log_basecase.txt
 
-echo "Hello 2"
 
