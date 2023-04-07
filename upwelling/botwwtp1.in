@@ -402,9 +402,9 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Vertical S-coordinates parameters (see below for details), [1:Ngrids].
 
-     THETA_S == 3.0d0                      ! surface stretching parameter
+     THETA_S == 0.0d0                      ! surface stretching parameter
      THETA_B == 0.0d0                      ! bottom  stretching parameter
-      TCLINE == 25.0d0                     ! critical depth (m)
+      TCLINE == 1.0d17                     ! critical depth (m)
 
 ! Mean Density and Brunt-Vaisala frequency.
 
@@ -1048,25 +1048,26 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! continuation (\) or a vertical bar (|) symbol after each entry, except
 ! the last one.
 
-     NFFILES == 1                          ! number of unique forcing files
+     NFFILES == 2                          ! number of unique forcing files
 
-     FRCNAME == roms_frc.nc              ! forcing file 1, grid 1
+     FRCNAME == /mmfs1/gscratch/macc/auroral/LO_user/forcing/upwelling/sustr.nc \
+                /mmfs1/gscratch/macc/auroral/LO_user/forcing/upwelling/svstr.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 
-     DAINAME == roms_dai_LwSrc.nc
-     GSTNAME == roms_gst_LwSrc.nc
-     RSTNAME == roms_rst_LwSrc.nc
-     HISNAME == roms_his_LwSrc.nc
-     QCKNAME == roms_qck_LwSrc.nc
-     TLMNAME == roms_tlm_LwSrc.nc
-     TLFNAME == roms_tlf_LwSrc.nc
-     ADJNAME == roms_adj_LwSrc.nc
-     AVGNAME == roms_avg_LwSrc.nc
-     HARNAME == roms_har_LwSrc.nc
-     DIANAME == roms_dia_LwSrc.nc
-     STANAME == roms_sta_LwSrc.nc
-     FLTNAME == roms_flt_LwSrc.nc
+     DAINAME == roms_dai_botwwtp1.nc
+     GSTNAME == roms_gst_botwwtp1.nc
+     RSTNAME == roms_rst_botwwtp1.nc
+     HISNAME == roms_his_botwwtp1.nc
+     QCKNAME == roms_qck_botwwtp1.nc
+     TLMNAME == roms_tlm_botwwtp1.nc
+     TLFNAME == roms_tlf_botwwtp1.nc
+     ADJNAME == roms_adj_botwwtp1.nc
+     AVGNAME == roms_avg_botwwtp1.nc
+     HARNAME == roms_har_botwwtp1.nc
+     DIANAME == roms_dia_botwwtp1.nc
+     STANAME == roms_sta_botwwtp1.nc
+     FLTNAME == roms_flt_botwwtp1.nc
 
 ! Input ASCII parameter filenames.
 
