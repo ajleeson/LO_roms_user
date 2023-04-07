@@ -34,7 +34,7 @@
 
 #define ANA_GRID
 #define ANA_INITIAL
-#undef ANA_SMFLUX
+#define ANA_SMFLUX
 #define ANA_STFLUX
 #define ANA_SSFLUX
 #define ANA_BTFLUX
