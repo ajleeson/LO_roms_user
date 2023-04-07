@@ -1048,9 +1048,10 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! continuation (\) or a vertical bar (|) symbol after each entry, except
 ! the last one.
 
-!     NFFILES == 1                          ! number of unique forcing files
+     NFFILES == 2                          ! number of unique forcing files
 
-!     FRCNAME == roms_frc.nc              ! forcing file 1, grid 1
+     FRCNAME == /mmfs1/gscratch/macc/auroral/LO_user/forcing/upwelling/sustr.nc \
+                /mmfs1/gscratch/macc/auroral/LO_user/forcing/upwelling/svstr.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 
