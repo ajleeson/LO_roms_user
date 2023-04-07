@@ -1055,19 +1055,19 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Output NetCDF file names, [1:Ngrids].
 
-     DAINAME == roms_dai_botwwtp1.nc
-     GSTNAME == roms_gst_botwwtp1.nc
-     RSTNAME == roms_rst_botwwtp1.nc
-     HISNAME == roms_his_botwwtp1.nc
-     QCKNAME == roms_qck_botwwtp1.nc
-     TLMNAME == roms_tlm_botwwtp1.nc
-     TLFNAME == roms_tlf_botwwtp1.nc
-     ADJNAME == roms_adj_botwwtp1.nc
-     AVGNAME == roms_avg_botwwtp1.nc
-     HARNAME == roms_har_botwwtp1.nc
-     DIANAME == roms_dia_botwwtp1.nc
-     STANAME == roms_sta_botwwtp1.nc
-     FLTNAME == roms_flt_botwwtp1.nc
+     DAINAME == roms_dai_botwwtp10.nc
+     GSTNAME == roms_gst_botwwtp10.nc
+     RSTNAME == roms_rst_botwwtp10.nc
+     HISNAME == roms_his_botwwtp10.nc
+     QCKNAME == roms_qck_botwwtp10.nc
+     TLMNAME == roms_tlm_botwwtp10.nc
+     TLFNAME == roms_tlf_botwwtp10.nc
+     ADJNAME == roms_adj_botwwtp10.nc
+     AVGNAME == roms_avg_botwwtp10.nc
+     HARNAME == roms_har_botwwtp10.nc
+     DIANAME == roms_dia_botwwtp10.nc
+     STANAME == roms_sta_botwwtp10.nc
+     FLTNAME == roms_flt_botwwtp10.nc
 
 ! Input ASCII parameter filenames.
 
