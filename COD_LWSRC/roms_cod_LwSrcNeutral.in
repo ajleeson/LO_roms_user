@@ -1067,17 +1067,17 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      DAINAME == roms_dai.nc
      GSTNAME == roms_gst.nc
-     RSTNAME == rst_cod_lwsrc.nc
-     HISNAME == his_cod_lwsrc.nc
-     QCKNAME == qck_cod_lwsrc.nc
+     RSTNAME == rst_cod_lwsrcNeutral.nc
+     HISNAME == his_cod_lwsrcNeutral.nc
+     QCKNAME == qck_cod_lwsrcNeutral.nc
      TLMNAME == roms_tlm.nc
      TLFNAME == roms_tlf.nc
      ADJNAME == roms_adj.nc
-     AVGNAME == avg_cod_lwsrc.nc
+     AVGNAME == avg_cod_lwsrcNeutral.nc
      HARNAME == roms_har.nc
-     DIANAME == dia_cod_lwsrc.nc
-     STANAME == sta_cod_lwsrc.nc
-     FLTNAME == flt_cod_lwsrc.nc
+     DIANAME == dia_cod_lwsrcNeutral.nc
+     STANAME == sta_cod_lwsrcNeutral.nc
+     FLTNAME == flt_cod_lwsrcNeutral.nc
 
 ! Input ASCII parameter filenames.
 
