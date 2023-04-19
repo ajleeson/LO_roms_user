@@ -106,8 +106,8 @@ GridsInLayer =  1
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
-      NtileI == 2                               ! I-direction partition
-      NtileJ == 2                               ! J-direction partition
+      NtileI == 1                               ! I-direction partition
+      NtileJ == 1                               ! J-direction partition
 
 ! Set horizontal and vertical advection schemes for active and inert
 ! tracers. A different advection scheme is allowed for each tracer.
@@ -1067,17 +1067,17 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      DAINAME == roms_dai.nc
      GSTNAME == roms_gst.nc
-     RSTNAME == rst_cod_lwsrc.nc
-     HISNAME == his_cod_lwsrc.nc
-     QCKNAME == qck_cod_lwsrc.nc
+     RSTNAME == rst_cod_1x1tile.nc
+     HISNAME == his_cod_1x1tile.nc
+     QCKNAME == qck_cod_1x1tile.nc
      TLMNAME == roms_tlm.nc
      TLFNAME == roms_tlf.nc
      ADJNAME == roms_adj.nc
-     AVGNAME == avg_cod_lwsrc.nc
+     AVGNAME == avg_cod_1x1tile.nc
      HARNAME == roms_har.nc
-     DIANAME == dia_cod_lwsrc.nc
-     STANAME == sta_cod_lwsrc.nc
-     FLTNAME == flt_cod_lwsrc.nc
+     DIANAME == dia_cod_1x1tile.nc
+     STANAME == sta_cod_1x1tile.nc
+     FLTNAME == flt_cod_1x1tile.nc
 
 ! Input ASCII parameter filenames.
 
