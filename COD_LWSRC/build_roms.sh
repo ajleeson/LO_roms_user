@@ -161,7 +161,7 @@ export     MY_PROJECT_DIR=${PWD}
 # out. Any string value (including off) will evaluate to TRUE in
 # conditional if-statements.
 
- export           USE_MPI=            # distributed-memory parallelism
+ export           USE_MPI=on            # distributed-memory parallelism
  export        USE_MPIF90=on            # compile with mpif90 script
  export         which_MPI=intel         # compile with mpiifort library
 #export         which_MPI=mpich         # compile with MPICH library

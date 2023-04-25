@@ -320,23 +320,22 @@
 
 # elif defined COD_LWSRC
 
-!!!!!!!!!!!!!   User has to configure this and recompile !!!!!!!!!!!!
-
+!!!! Limited options for source distribution in vertical
+!!!! For others, code and recompile
         IF (DOMAIN(ng)%NorthEast_Test(tile)) THEN
-						      
+          IF (user(8).eq.0.0_r8) THEN
 !   Source uniformly distributed through the water column				   
-!         DO k=1,N(ng)
-!             SOURCES(ng)%Qshape(1,k)=1.0_r8/REAL(N(ng),r8)
-!         END DO
-
-!   Source all in the bottom cell				   
-          DO k=1,N(ng)
-              SOURCES(ng)%Qshape(1,k)=0.0_r8
-          END DO
-	  SOURCES(ng)%Qshape(1,1)=1.0_r8
-					      
+            DO k=1,N(ng)
+                SOURCES(ng)%Qshape(1,k)=1.0_r8/REAL(N(ng),r8)
+            END DO
+          ELSE
+!   Source all at one k index depth		   
+            DO k=1,N(ng)
+                SOURCES(ng)%Qshape(1,k)=0.0_r8
+            END DO
+            SOURCES(ng)%Qshape(1,INT(user(8)))=1.0_r8
+          END IF
         END IF
-
 # else
 !!
 !!  Notice that there is not need for distributed-memory communications

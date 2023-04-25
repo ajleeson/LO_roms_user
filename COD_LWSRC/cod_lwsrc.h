@@ -31,7 +31,7 @@
 #define SPLINES_VDIFF
 #define SPLINES_VVISC
 #define SOLAR_SOURCE
-#define NONLIN_EOS
+#undef  NONLIN_EOS
 #define SALINITY
 #define AVERAGES
 #define AVERAGES_AKV        /* for COD */
