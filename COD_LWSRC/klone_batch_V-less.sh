@@ -21,5 +21,5 @@ NFDIR=/gscratch/macc/local/netcdf-ifort/
 export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
 
 RUN_DIR=/mmfs1/gscratch/macc/auroral/LO_roms_user/COD_LWSRC
-mpirun -np 4 $RUN_DIR/romsM $RUN_DIR/roms_cod_V-less.in > $RUN_DIR/V-less_roms_log.txt
+mpirun -np 1 $RUN_DIR/romsM $RUN_DIR/roms_cod_V-less.in > $RUN_DIR/V-less_roms_log.txt
 

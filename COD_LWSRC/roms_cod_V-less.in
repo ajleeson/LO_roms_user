@@ -106,8 +106,8 @@ GridsInLayer =  1
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
-      NtileI == 2                               ! I-direction partition
-      NtileJ == 2                               ! J-direction partition
+      NtileI == 1                               ! I-direction partition
+      NtileJ == 1                               ! J-direction partition
 
 ! Set horizontal and vertical advection schemes for active and inert
 ! tracers. A different advection scheme is allowed for each tracer.
@@ -221,11 +221,11 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-!     NTIMES == 5400    ! 15 days
-      NTIMES == 150      !
+!     NTIMES == 3000    ! 
+      NTIMES == 150     ! 15 minutes 
 !         DT == 270.0d0 ! 320 time steps per day
 !         DT == 240.0d0 ! 360 time steps per day
-	  DT == 6.0d0
+	  DT == 6.0d0      ! 10 time steps per minute
      NDTFAST == 30
 
 ! Number of timesteps for computing observation impacts during the
@@ -445,8 +445,10 @@ LtracerSponge == F F                            ! temperature, salinity, inert
           R0 == 1027.0d0                   ! kg/m3
           T0 == 15.0d0                     ! Celsius
           S0 == 35.0d0                     ! nondimensional
+!      TCOEF == 1.7d-4                     ! 1/Celsius
+!      SCOEF == 7.6d-4                     ! nondimensional
        TCOEF == 1.7d-4                     ! 1/Celsius
-       SCOEF == 7.6d-4                     ! nondimensional
+       SCOEF == 0.0d0                      ! nondimensional
 
 ! Slipperiness parameter: 1.0 (free slip) or -1.0 (no slip)
 
@@ -463,7 +465,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! (like river runoff) and to specify which tracer variables to consider:
 ! [1:NAT+NPT,Ngrids].  See glossary below for details.
 
-  LtracerSrc == F F                        ! temperature, salinity, inert
+  LtracerSrc == F T                        ! temperature, salinity, inert
 
 ! Logical switches (TRUE/FALSE) to read and process climatology fields.
 ! See glossary below for details.
@@ -889,16 +891,16 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Generic User parameters, [1:NUSER].
 
-        NUSER =  7
+        NUSER =  8
 !       user needs to configure Vshape in ana_psource.h
 !       user parameters for COD LWSRC test case
-!              Coriolis  depth    wind     heat   strat    xsize    discharge
-!                  f       h     stress    flux   dTdz     ysize   
-                 s^-1      m       Pa      W m-2  oC/m      km       m^3/s
+!              Coriolis  depth    wind     heat   strat    xsize    discharge  k index
+!                  f       h     stress    flux   dTdz     ysize               of source
+                 s^-1      m       Pa      W m-2  oC/m      km       m^3/s     0=uniform
 ! no wind or heat flux
 !       USER =  0.0d-04  20.0d0  0.0d0    0.0d0   0.0d0    2.0d0     10.0d0
 ! add initial thermal stratification
-        USER =  0.0d-04  20.0d0  0.0d0    0.0d0   0.3d0    5.0d0     10.0d0 
+        USER =  0.0d-04  20.0d0  0.0d0    0.0d0   0.3d0    5.0d0     10.0d0       15
 
 
 ! Input and Output files processing library to use:
