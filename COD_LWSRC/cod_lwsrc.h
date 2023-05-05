@@ -94,4 +94,7 @@
 #define ANA_BTFLUX
 #undef  ANA_WWAVE           /* for COD */
 
+/* to use volume-less vertical sources */
+#define LWSRC_MASS_ONLY
+
 
