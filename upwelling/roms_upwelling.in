@@ -74,7 +74,8 @@
 ! first so all information arrays can be initialized properly.
 
 !      VARNAME = ROMS/External/varinfo.dat
-     VARNAME = /mmfs1/gscratch/macc/auroral/LO_roms_source_alt/varinfo/varinfo.yaml
+     VARNAME = /mmfs1/gscratch/macc/auroral/LO_roms_source_alt/varinfo/varinfo.yaml  !klone
+     VARNAME = /gscratch/macc/auroral/LO_roms_source_alt/varinfo/varinfo.yaml        !mox
 
 ! Number of nested grids.
 
