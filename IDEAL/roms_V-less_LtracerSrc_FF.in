@@ -465,7 +465,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! (like river runoff) and to specify which tracer variables to consider:
 ! [1:NAT+NPT,Ngrids].  See glossary below for details.
 
-  LtracerSrc == F T                        ! temperature, salinity, inert
+  LtracerSrc == F F                        ! temperature, salinity, inert
 
 ! Logical switches (TRUE/FALSE) to read and process climatology fields.
 ! See glossary below for details.
@@ -1037,7 +1037,8 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     SSFNAME == /mmfs1/gscratch/macc/auroral/LO_roms_user/IDEAL/salt-no-temp.nc
+     ! SSFNAME == /mmfs1/gscratch/macc/auroral/LO_roms_user/IDEAL/salt-no-temp.nc ! klone
+     SSFNAME == /gscratch/macc/auroral/LO_roms_user/IDEAL/salt-no-temp.nc       ! mox
 
 ! Input tidal forcing file name.
 

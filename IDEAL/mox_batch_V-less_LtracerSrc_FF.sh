@@ -18,5 +18,5 @@
 module load icc_17-impi_2017
 module load netcdf_fortran+c_4.4.1.1-icc_17
 
-RUN_DIR=/mmfs1/gscratch/macc/auroral/LO_roms_user/IDEAL
-mpirun -np 1 $RUN_DIR/romsM $RUN_DIR/roms_V-less.in > $RUN_DIR/V-roms_log.txt
+RUN_DIR= /gscratch/macc/auroral/LO_roms_user/IDEAL
+mpirun -np 1 $RUN_DIR/romsM $RUN_DIR/roms_V-less_LtracerSrc_FF.in > $RUN_DIR/V-roms_log.txt
