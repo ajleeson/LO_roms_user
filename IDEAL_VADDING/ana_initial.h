@@ -592,7 +592,7 @@
           END DO
         END DO
       END DO
-# elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined COD_CTW || defined COD_UPWELL_LC2004 || defined COD_RAP || defined IDEAL
+# elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined COD_CTW || defined COD_UPWELL_LC2004 || defined COD_RAP || defined IDEAL_VADDING
       DO k=1,N(ng)
         DO j=JstrR,JendR
           DO i=IstrR,IendR

@@ -101,7 +101,7 @@
           DO i=IstrT,IendT
 #if defined BL_TEST
             stflux(i,j,itrc)=srflx(i,j)
-#elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined IDEAL
+#elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined IDEAL_VADDING
             stflux(i,j,itrc)=user(4)/(rho0*cp)
 #else
             stflux(i,j,itrc)=0.0_r8

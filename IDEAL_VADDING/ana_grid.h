@@ -399,7 +399,7 @@
       depth=50.0_r8
       f0=1.0E-04_r8
       beta=0.0_r8
-#elif defined IDEAL
+#elif defined IDEAL_VADDING
       f0=user(1)
       beta=0.0_r8
       depth=user(2)

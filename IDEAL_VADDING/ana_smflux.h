@@ -172,7 +172,7 @@
 # endif
         END DO
       END DO
-#elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined IDEAL
+#elif defined COD_1DMIX || defined COD_BIOSED_ESTUARY || defined IDEAL_VADDING
       DO j=JstrR,JendR
         DO i=Istr,IendR
           sustr(i,j)=user(3)/rho0
