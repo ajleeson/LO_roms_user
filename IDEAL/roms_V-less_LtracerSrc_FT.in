@@ -465,7 +465,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! (like river runoff) and to specify which tracer variables to consider:
 ! [1:NAT+NPT,Ngrids].  See glossary below for details.
 
-  LtracerSrc == F F                        ! temperature, salinity, inert
+  LtracerSrc == F T                        ! temperature, salinity, inert
 
 ! Logical switches (TRUE/FALSE) to read and process climatology fields.
 ! See glossary below for details.
@@ -1070,17 +1070,17 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      DAINAME == roms_dai.nc
      GSTNAME == roms_gst.nc
-     RSTNAME == rst_V-less_LtracerSrcFF.nc
-     HISNAME == his_V-less_LtracerSrcFF.nc
-     QCKNAME == qck_V-less_LtracerSrcFF.nc
+     RSTNAME == rst_V-less_LtracerSrcFT.nc
+     HISNAME == his_V-less_LtracerSrcFT.nc
+     QCKNAME == qck_V-less_LtracerSrcFT.nc
      TLMNAME == roms_tlm.nc
      TLFNAME == roms_tlf.nc
      ADJNAME == roms_adj.nc
-     AVGNAME == avg_V-less_LtracerSrcFF.nc
+     AVGNAME == avg_V-less_LtracerSrcFT.nc
      HARNAME == roms_har.nc
-     DIANAME == dia_V-less_LtracerSrcFF.nc
-     STANAME == sta_V-less_LtracerSrcFF.nc
-     FLTNAME == flt_V-less_LtracerSrcFF.nc
+     DIANAME == dia_V-less_LtracerSrcFT.nc
+     STANAME == sta_V-less_LtracerSrcFT.nc
+     FLTNAME == flt_V-less_LtracerSrcFT.nc
 
 ! Input ASCII parameter filenames.
 
