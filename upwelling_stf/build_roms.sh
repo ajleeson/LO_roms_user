@@ -149,7 +149,7 @@ export   ROMS_APPLICATION=$THISDIR
 # else
 #   export      MY_ROOT_DIR=${HOME}/ocean/repository/git
 # fi
-export        MY_ROOT_DIR=/gscratch/macc/parker
+export        MY_ROOT_DIR=/gscratch/stf/aleeson
 
 export     MY_PROJECT_DIR=${PWD}
 
