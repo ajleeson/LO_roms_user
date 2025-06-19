@@ -170,7 +170,7 @@ export   ROMS_APPLICATION=$THISDIR
 # script describing the location from where the ROMS source code was cloned
 # or downloaded, it uses that value.
 
-export        MY_ROOT_DIR=/gscratch/macc/parker
+export        MY_ROOT_DIR=/gscratch/macc/auroral
 # if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
 #   export      MY_ROOT_DIR=${ROMS_ROOT_DIR}
 # else
