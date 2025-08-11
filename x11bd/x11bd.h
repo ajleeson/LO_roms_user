@@ -29,7 +29,7 @@
 #define EMINUSP
 #define DEFLATE
 #define HDF5
-#define AVERAGES
+#undef AVERAGES /* AL edit*/
 #define WET_DRY
 #define OMEGA_IMPLICIT
 
@@ -41,6 +41,8 @@
 
 #define ANA_BTFLUX
 #define ANA_BSFLUX
+
+#define T_PASSIVE /* AL edit to add passive tracers*/
 
 /* LiveOcean bio choices */
 #define BIO_FENNEL
