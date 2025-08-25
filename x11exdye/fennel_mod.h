@@ -98,6 +98,10 @@
       integer :: iOxyg                  ! Dissolved oxygen concentration
 #endif
 
+! AL edit to add exponentially decaying dye
+      integer :: idye2                  ! Test non-conservative dye
+! end AL edit
+
 #if defined DIAGNOSTICS && defined DIAGNOSTICS_BIO
 !
 !  Biological 2D diagnostic variable IDs.
@@ -161,6 +165,11 @@
       real(r8), allocatable :: ZooMin(:)             ! mmol_N/m3
       real(r8), allocatable :: ZooMR(:)              ! 1/day
       real(r8), allocatable :: pCO2air(:)            ! ppmv
+
+! AL edit to add exponentially decaying dye
+      real(r8), allocatable :: decay_dye2(:)         ! 1/s  dye2 exponential decay rate
+! end AL edit
+
 !
       CONTAINS
 !
@@ -463,6 +472,14 @@
         allocate ( pCO2air(Ngrids) )
         Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
       END IF
+
+! AL edit to add exponentially decaying dye
+      IF (.not.allocated(decay_dye2)) THEN
+        allocate ( decay_dye2(Ngrids) )
+        Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+! end AL edit
+
 !
 !  Allocate biological tracer vector.
 !
@@ -526,6 +543,16 @@
       ic=ic+1
 # endif
 !
+
+! AL edit to add exponentially decaying dye
+      DO i=1,NT(ng)
+            IF (TRIM(Vname(1,idTvar(i))) == 'dye_02') THEN
+                  iDYE2_ = idTvar(i)
+            END IF
+      END DO
+! end AL edit
+
+
       RETURN
       END SUBROUTINE initialize_biology
 
