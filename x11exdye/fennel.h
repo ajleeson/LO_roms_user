@@ -711,6 +711,18 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
           PARsur(i)=PARfrac(ng)*srflx(i,j)*rho0*Cp
         END DO
 !
+
+! AL edit to add exponentially decaying dye
+        IF (idye2 > 0) THEN
+            DO k=1,N(ng)
+              DO i=Istr,Iend
+                t(i,j,k,nnew,idye) = t(i,j,k,nstp,idye2) * EXP(-decay_dye2(ng) * dt(ng))
+              END DO
+            END DO
+          END IF
+! end AL edit
+
+
 !=======================================================================
 !  Start internal iterations to achieve convergence of the nonlinear
 !  backward-implicit solution.
