@@ -544,14 +544,6 @@
 # endif
 !
 
-! AL edit to add exponentially decaying dye
-      DO i=1,NT(ng)
-            IF (TRIM(Vname(1,idTvar(i))) == 'dye_02') THEN
-                  iDYE2_ = idTvar(i)
-            END IF
-      END DO
-! end AL edit
-
 
       RETURN
       END SUBROUTINE initialize_biology
