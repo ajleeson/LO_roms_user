@@ -713,10 +713,10 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !
 
 ! AL edit to add exponentially decaying dye
-        IF (idye2 > 0) THEN
+        IF (inert(2) > 0) THEN
             DO k=1,N(ng)
               DO i=Istr,Iend
-                t(i,j,k,nnew,idye2) = t(i,j,k,nstp,idye2) * EXP(-decay_dye2(ng) * dt(ng))
+                t(i,j,k,nnew,inert(2)) = t(i,j,k,nstp,inert(2)) * EXP(-decay_dye2(ng) * dt(ng))
               END DO
             END DO
           END IF

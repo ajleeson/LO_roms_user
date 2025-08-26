@@ -98,10 +98,6 @@
       integer :: iOxyg                  ! Dissolved oxygen concentration
 #endif
 
-! AL edit to add exponentially decaying dye
-      integer :: idye2                  ! Test non-conservative dye
-! end AL edit
-
 #if defined DIAGNOSTICS && defined DIAGNOSTICS_BIO
 !
 !  Biological 2D diagnostic variable IDs.
