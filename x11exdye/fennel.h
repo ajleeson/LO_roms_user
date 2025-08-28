@@ -713,13 +713,18 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !
 
 ! AL edit to add exponentially decaying dye
-        IF (inert(2) > 0) THEN
+! This block of code loads all of they dye into a temporary scratch array
+! called "Dye", where the old value of "Dye" is the dye concentration in 
+! the previous time step (or 0, if concentration is negative for some reason).
+        DO itrc=1,NPT
+            idye=inert(itrc)
             DO k=1,N(ng)
               DO i=Istr,Iend
-                t(i,j,k,nnew,inert(2)) = t(i,j,k,nstp,inert(2)) * EXP(-decay_dye2(ng) * dt(ng))
+                Dye_old(i,k,idye)=MAX(0.0_r8,t(i,j,k,nstp,idye))
+                Dye(i,k,idye)=Dye_old(i,k,idye)
               END DO
             END DO
-          END IF
+          END DO
 ! end AL edit
 
 
@@ -1775,6 +1780,23 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 # endif
 #endif
           END DO SINK_LOOP
+
+
+! AL edit to add exponentially decaying dye
+!-----------------------------------------------------------------------
+!  Exponential decaying dye (modified inert passive tracer)
+!-----------------------------------------------------------------------
+! Note that we are only applying exponential decay to dye_02,
+! which corresponds to inert(2)
+          DO k=1,N(ng)
+            DO i=Istr,Iend
+              cff1 = decay_dye2(ng) * dt(ng)
+              Dye(i,k,inert(2)) = Dye_old(i,k,inert(2)) / (1.0_r8 + cff1)
+            END DO
+          END DO
+! end AL edit
+
+
         END DO ITER_LOOP
 !
 !-----------------------------------------------------------------------
@@ -1816,6 +1838,20 @@ DO itrc=1,NBT
             END DO
           END DO
         END DO
+
+! AL edit to add exponentially decaying dye
+! Updating global tracer variable with new changes from scratch array
+        DO itrc=1,NPT
+            idye=inert(itrc)
+            DO k=1,N(ng)
+              DO i=Istr,Iend
+                cff=Dye(i,k,idye)-Dye_old(i,k,idye)
+                t(i,j,k,nnew,idye)=t(i,j,k,nnew,idye)+cff*Hz(i,j,k)
+              END DO
+            END DO
+          END DO
+! end AL edit
+
       END DO J_LOOP
 !
       RETURN
