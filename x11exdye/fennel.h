@@ -333,7 +333,7 @@
       integer, parameter :: Nsink = 4
 #endif
 
-      integer :: Iter, i, ibio, isink, itrc, ivar, j, k, ks
+      integer :: Iter, i, ibio, idye, isink, itrc, ivar, j, k, ks
 
       integer, dimension(Nsink) :: idsink
 
@@ -489,6 +489,9 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio_old
+
+      real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Dye
+      real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Dye_old
 
       real(r8), dimension(IminS:ImaxS,0:N(ng)) :: FC
 
