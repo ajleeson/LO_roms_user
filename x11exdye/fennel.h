@@ -808,16 +808,6 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
           DO i=Istr,Iend
             PAR=PARsur(i)
             AttFac=0.0_r8
-      
-!!jx AL edit (2023.08.14) to make AttSW larger in Salish Sea
-!jx            IF ((lonr(i,j).gt.-123.89_r8).and.(latr(i,j).lt.50.29_r8).and.(latr(i,j).gt.47.02_r8)) THEN
-!jx              AttSW_region = AttSW(ng)*3.0_r8
-!jx            ELSE IF ((lonr(i,j).gt.-125.31_r8).and.(lonr(i,j).lt.-123.89_r8).and.(latr(i,j).lt.51.02_r8).and.(latr(i,j).gt.49.13_r8)) THEN
-!jx              AttSW_region = AttSW(ng)*3.0_r8
-!jx            ELSE
-!jx              AttSW_region = AttSW(ng)
-!jx            END IF
-!!jx end AL edit
 
             IF (PARsur(i).gt.0.0_r8) THEN
               DO k=N(ng),1,-1
@@ -831,7 +821,6 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !      &               AttFac)*                                           &
 !      &               (z_w(i,j,k)-z_w(i,j,k-1))
 
-! AL edit
 ! This version uses AttSW_region which allows the Salish Sea to have
 ! a different AttSW than the coast.
 
@@ -1798,10 +1787,6 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
               cff1 = decay_dye2(ng) * dt(ng)
               Dye(i,k,inert(2)) = Dye_old(i,k,inert(2)) / (1.0_r8 + cff1)
             END DO
-            IF (k.eq.1) THEN
-                print *, 'Test printing dye_01 concentration', MAXVAL(Dye(:,k,inert(1)))
-                print *, 'Test printing dye_02 concentration', MAXVAL(Dye(:,k,inert(2)))
-            END IF
           END DO
 ! end AL edit
 
