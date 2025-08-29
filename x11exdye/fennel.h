@@ -1801,6 +1801,7 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
             IF (k.eq.1) THEN
                 print *, 'Test printing dye_01 concentration' MAXVAL(Dye(:,k,inert(1)))
                 print *, 'Test printing dye_02 concentration' MAXVAL(Dye(:,k,inert(2)))
+            END IF
           END DO
 ! end AL edit
 
