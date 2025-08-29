@@ -144,7 +144,7 @@
 
 ! AL edit to add exponentially decaying dye
             CASE ('decay_dye2')
-              Npts=load_r(Nval, Rval, Ngrids, pCO2air)
+              Npts=load_r(Nval, Rval, Ngrids, decay_dye2)
 ! end AL edit
               
             CASE ('TNU2')
@@ -716,7 +716,7 @@
             WRITE (out,80) decay_dye2(ng), 'decay_dye2',                &
      &            'exponential decay rate of dye_02 (1/s).'
 ! end AL edit
-     
+
 #ifdef TS_DIF2
             DO itrc=1,NBT
               i=idbio(itrc)
