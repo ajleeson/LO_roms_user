@@ -314,7 +314,7 @@
           CASE ('idRtrc(iRDeC)')
             idRtrc(iRDeC)=varid
 # endif
-#
+#endif
 
 ! AL edit to add exponentially decaying dye
           CASE ('idRtrc(inert(2))')
