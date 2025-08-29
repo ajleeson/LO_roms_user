@@ -490,8 +490,10 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio_old
 
+! AL edit to add exponentially decaying dye
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Dye
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Dye_old
+! end AL edit
 
       real(r8), dimension(IminS:ImaxS,0:N(ng)) :: FC
 
@@ -787,6 +789,25 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !  however, do not improve the accuaracy of the solution.
 !
         ITER_LOOP: DO Iter=1,BioIter(ng)
+
+
+! AL edit to add exponentially decaying dye
+!-----------------------------------------------------------------------
+!  Exponential decaying dye (modified inert passive tracer)
+!-----------------------------------------------------------------------
+! Note that we are only applying exponential decay to dye_02,
+! which corresponds to inert(2)
+            DO k=1,N(ng)
+              DO i=Istr,Iend
+                cff1 = decay_dye2(ng) * dt(ng)
+                Dye(i,k,inert(2)) = Dye_old(i,k,inert(2)) / (1.0_r8 + cff1)
+              END DO
+              IF (k.eq.1) THEN
+                  print *, 'Test printing dye_01 concentration' MAXVAL(Dye(:,k,inert(1)))
+                  print *, 'Test printing dye_02 concentration' MAXVAL(Dye(:,k,inert(2)))
+            END DO
+! end AL edit
+
 !
 !-----------------------------------------------------------------------
 !  Light-limited computations.
@@ -1783,21 +1804,6 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 # endif
 #endif
           END DO SINK_LOOP
-
-
-! AL edit to add exponentially decaying dye
-!-----------------------------------------------------------------------
-!  Exponential decaying dye (modified inert passive tracer)
-!-----------------------------------------------------------------------
-! Note that we are only applying exponential decay to dye_02,
-! which corresponds to inert(2)
-          DO k=1,N(ng)
-            DO i=Istr,Iend
-              cff1 = decay_dye2(ng) * dt(ng)
-              Dye(i,k,inert(2)) = Dye_old(i,k,inert(2)) / (1.0_r8 + cff1)
-            END DO
-          END DO
-! end AL edit
 
 
         END DO ITER_LOOP

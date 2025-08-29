@@ -712,6 +712,11 @@
      &            'Small detritus sinking velocity (m/day).'
             WRITE (out,80) pCO2air(ng), 'pCO2air',                      &
      &            'CO2 partial pressure in air (ppm by volume).'
+! AL edit to add exponentially decaying dye
+            WRITE (out,80) decay_dye2(ng), 'decay_dye2',                &
+     &            'exponential decay rate of dye_02 (1/s).'
+! end AL edit
+     
 #ifdef TS_DIF2
             DO itrc=1,NBT
               i=idbio(itrc)
