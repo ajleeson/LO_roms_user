@@ -1784,7 +1784,7 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 ! which corresponds to inert(2)
           DO k=1,N(ng)
             DO i=Istr,Iend
-              cff1 = decay_dye2(ng) * dt(ng)
+              cff1 = 0.00001_r8 * dt(ng)
               Dye(i,k,inert(2)) = Dye_old(i,k,inert(2)) / (1.0_r8 + cff1)
             END DO
           END DO
