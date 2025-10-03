@@ -251,10 +251,10 @@
       USE dateclock_mod, ONLY : caldate
 !
 ! PM Edit
-#ifdef OAE_BGC
-!     USE mod_oae, ONLY : OAE ! Should not need this line at all
-      USE mod_oae, ONLY : FIX_CFF3
-#endif
+!#ifdef OAE_BGC
+!!     USE mod_oae, ONLY : OAE ! Should not need this line at all
+!      USE mod_oae, ONLY : FIX_CFF3
+!#endif
 ! End PM Edit
 !  Imported variable declarations.
 !
