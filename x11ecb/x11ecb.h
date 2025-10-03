@@ -59,7 +59,7 @@
 #  undef INCREASE_NO3LOSS /*jx*/
 #  define BURY           /*jx*/
 /* from Kyle Hinson */
-# define KVALUE_ECB
+# undef KVALUE_ECB
 # define LOSTCO3
 # define OAE_BGC
 /* End from Kyle Hinson */
