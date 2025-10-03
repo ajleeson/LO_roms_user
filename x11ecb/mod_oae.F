@@ -44,7 +44,8 @@
 ! DEFINE SIZE OF ROMS GRID, UNIQUE TO ALL DOMAINS
 ! This must be changed to match the size of eta_rho xi_rho, and s_rho in the user's
 ! grid file
-      real(r8), save :: sp_crystal( 0:335 , 0:563 , 1:20 ) = 0.
+!      real(r8), save :: sp_crystal( 0:335 , 0:563 , 1:20 ) = 0.
+      real(r8), save :: sp_crystal( 0:664 , 0:1303 , 1:30 ) = 0. ! modify for LiveOcean grid
 !
 !     We assume a grid dimension Lm=334, Mm=562, N=20, which is double-checked
 !       at the beginning of precip_tile.
