@@ -214,15 +214,17 @@
       integer :: mcloc
       real(r8), parameter :: spsink = 2.0            ! m d-1
 
-#ifdef CARBON
-      integer, parameter :: Nsink = 6
-#else
-      integer, parameter :: Nsink = 4
-#endif
+! AL edit to comment out variables related to iskink, idsink, Nsink
+!#ifdef CARBON
+!      integer, parameter :: Nsink = 6
+!#else
+!      integer, parameter :: Nsink = 4
+!#endif
 
-      integer :: isink
+!      integer :: isink
 
-      integer, dimension(Nsink) :: idsink
+!      integer, dimension(Nsink) :: idsink
+! end AL edit
 
       real(r8), parameter :: eps = 1.0e-20_r8
 
@@ -434,7 +436,9 @@
 !  "Bio(:,:,isink)" in terms of a set of parabolic segments within each
 !  grid box. Then, compute semi-Lagrangian flux due to sinking.
 !
-            ibio=idsink(isink)
+! AL edit to comment out variables related to iskink, idsink, Nsink
+!            ibio=idsink(isink)
+! end AL edit
 !
 !  Copy concentration of biological particulates into scratch array
 !  "qc" (q-central, restrict it to be positive) which is hereafter
