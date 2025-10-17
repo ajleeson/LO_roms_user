@@ -29,9 +29,9 @@
 #define EMINUSP
 #define DEFLATE
 #define HDF5
-#define AVERAGES
+#undef AVERAGES
 #define WET_DRY
-#define OMEGA_IMPLICIT
+#undef OMEGA_IMPLICIT
 
 #define RADIATION_2D
 #define SSH_TIDES
