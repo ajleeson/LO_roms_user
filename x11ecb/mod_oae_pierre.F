@@ -44,9 +44,8 @@
 ! DEFINE SIZE OF ROMS GRID, UNIQUE TO ALL DOMAINS
 ! This must be changed to match the size of eta_rho xi_rho, and s_rho in the user's
 ! grid file
-!      real(r8), save :: sp_crystal( 0:335 , 0:563 , 1:20 ) = 0.
-      real(r8), save :: sp_crystal( 0:664 , 0:1303 , 1:30 ) = 0. ! modify for LiveOcean grid
-!      real(r8), save :: sp_crystal( -3:664+4 , -3:1303+4 , 1:30 ) = 0. ! ghost points
+      real(r8), save :: sp_crystal( - 3 :   4 + 4, - 3 :   4 + 4, 1 : 30) = 0. ! Bio-toy: Lm=  4, Mm=  4, N=30.
+!     real(r8), save :: sp_crystal( - 3 : 334 + 4, - 3 : 562 + 4, 1 : 20 ) = 0. ! 600m:    Lm=334, Mm=562, N=20.
 !
 !     We assume a grid dimension Lm=334, Mm=562, N=20, which is double-checked
 !       at the beginning of precip_tile.
@@ -215,17 +214,15 @@
       integer :: mcloc
       real(r8), parameter :: spsink = 2.0            ! m d-1
 
-! AL edit to comment out variables related to iskink, idsink, Nsink
-!#ifdef CARBON
-!      integer, parameter :: Nsink = 6
-!#else
-!      integer, parameter :: Nsink = 4
-!#endif
+#ifdef CARBON
+      integer, parameter :: Nsink = 6
+#else
+      integer, parameter :: Nsink = 4
+#endif
 
-!      integer :: isink
+      integer :: isink
 
-!      integer, dimension(Nsink) :: idsink
-! end AL edit
+      integer, dimension(Nsink) :: idsink
 
       real(r8), parameter :: eps = 1.0e-20_r8
 
@@ -374,7 +371,7 @@
      &           Istr, Iend, LBi, UBi, LBj, UBj,                        &
      &           IminS, ImaxS, j,                                       &
 # ifdef MASKING
-          &           rmask,                                                 &
+     &           rmask,                                                 &
 # endif
 !    &           h,                                                     &
      &           z_r(IminS:,j,k),                                       &
@@ -445,9 +442,7 @@
 !  "Bio(:,:,isink)" in terms of a set of parabolic segments within each
 !  grid box. Then, compute semi-Lagrangian flux due to sinking.
 !
-! AL edit to comment out variables related to iskink, idsink, Nsink
-!            ibio=idsink(isink)
-! end AL edit
+!           ibio=idsink(isink) !idsink is currently undefined; keep this line commented.
 !
 !  Copy concentration of biological particulates into scratch array
 !  "qc" (q-central, restrict it to be positive) which is hereafter
@@ -714,15 +709,15 @@
 !        END DO
         DO i=Istr,Iend
           DO k=1,N(ng)
-!            t(i,j,k,nnew,iTIC_) = -9999.0_r8
+!           t(i,j,k,nnew,iTIC_) = -9999.0_r8
             t(i,j,k,nnew,iTIC_) = t(i,j,k,nnew,iTIC_)                   &
-     &      - sp_crystal_tile(i,j,k) * Hz(i,j,k)                        &
-     &      + REC_CO3(i,j,k) * Hz(i,j,k)
+     &                          - sp_crystal_tile(i,j,k) * Hz(i,j,k)    & 
+     &                              + REC_CO3(i,j,k) * Hz(i,j,k)
 !           t(i,j,k,nnew,iTAlk) = -9999.0_r8
 !           write(*,*) 'Original t(i,j,k,nnew,iTAlk),i,j,k=',t(i,j,k,nnew,iTAlk),i,j,k
-           t(i,j,k,nnew,iTAlk) = t(i,j,k,nnew,iTAlk)                    &
-     &     - (sp_crystal_tile(i,j,k) * 2.0_r8 * Hz(i,j,k))              &
-     &     + (REC_CO3(i,j,k) * 2.0_r8 * Hz(i,j,k))
+            t(i,j,k,nnew,iTAlk) = t(i,j,k,nnew,iTAlk)                   &
+     &         - (sp_crystal_tile(i,j,k) * 2.0_r8 * Hz(i,j,k))          & 
+     &         + (REC_CO3(i,j,k) * 2.0_r8 * Hz(i,j,k))
 !           write(*,*) 'Updated t(i,j,k,nnew,iTAlk),i,j,k=',t(i,j,k,nnew,iTAlk),i,j,k
           END DO
         END DO
@@ -749,7 +744,7 @@
      &       Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS,              &
      &       j,                                                         &
 # ifdef MASKING
-          &       rmask,                                                     &
+     &       rmask,                                                     &
 # endif
      &       zvec, TempC, Sal, TIC, pH, CO3 )
       implicit none
@@ -855,7 +850,7 @@
      &       Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS,              &
      &       j,                                                         &
 # ifdef MASKING
-          &       rmask,                                                     &
+     &       rmask,                                                     &
 # endif
      &       zvec, TempC, Sal, TIC, pH, aragValue)
       implicit none
@@ -875,8 +870,8 @@
 !
       real( r8 ), intent(in   ) ::                                      &
 # ifdef MASKING
-      &  rmask( LBi : UBi, LBj : UBj ),                                  &
- # endif
+     &  rmask( LBi : UBi, LBj : UBj ),                                  &
+# endif
 !    &  hbot(  LBi : UBi, LBj : UBj ),                                  &
      &  zvec(  IminS : ImaxS        ),                                  &
      &  TempC( IminS : ImaxS        ),                                  &
@@ -1311,3 +1306,4 @@
 
 #endif
       end MODULE mod_oae
+

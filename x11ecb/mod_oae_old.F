@@ -46,7 +46,6 @@
 ! grid file
 !      real(r8), save :: sp_crystal( 0:335 , 0:563 , 1:20 ) = 0.
       real(r8), save :: sp_crystal( 0:664 , 0:1303 , 1:30 ) = 0. ! modify for LiveOcean grid
-!      real(r8), save :: sp_crystal( -3:664+4 , -3:1303+4 , 1:30 ) = 0. ! ghost points
 !
 !     We assume a grid dimension Lm=334, Mm=562, N=20, which is double-checked
 !       at the beginning of precip_tile.
@@ -333,9 +332,7 @@
 !         First, recompute pH to get the value at each vertical level
           CALL pCO2_water_RZ (Istr, Iend, LBi, UBi, LBj, UBj,           &
      &                        IminS, ImaxS, j, DoNewton,                &
-# ifdef MASKING
      &                        rmask,                                    &
-# endif
      &                        Bio(IminS:,k,itemp), Bio(IminS:,k,isalt), &
      &                        Bio(IminS:,k,iTIC_), Bio(IminS:,k,iTAlk), &
      &                        pH_kLev, pCO2)
@@ -356,10 +353,7 @@
 
           CALL calc_CO3 (                                               &
      &           Istr, Iend, LBi, UBi, LBj, UBj,                        &
-     &           IminS, ImaxS, j,                                       &
-# ifdef MASKING
-     &           rmask,                                                 &
-# endif
+     &           IminS, ImaxS, j, rmask,                                &
 !     &           h,                                                     &
      &           z_r(IminS:,j,k),                                       &
      &           Bio(IminS:,k,itemp), Bio(IminS:,k,isalt),              &
@@ -372,10 +366,7 @@
 !       DO k=1,N(ng)
           call aragonite_saturation_state(                              &
      &           Istr, Iend, LBi, UBi, LBj, UBj,                        &
-     &           IminS, ImaxS, j,                                       &
-# ifdef MASKING
-          &           rmask,                                                 &
-# endif
+     &           IminS, ImaxS, j, rmask,                                &
 !    &           h,                                                     &
      &           z_r(IminS:,j,k),                                       &
      &           Bio(IminS:,k,itemp), Bio(IminS:,k,isalt),              &
@@ -747,10 +738,7 @@
 
       subroutine calc_CO3(                                              &
      &       Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS,              &
-     &       j,                                                         &
-# ifdef MASKING
-          &       rmask,                                                     &
-# endif
+     &       j, rmask,                                                  &
      &       zvec, TempC, Sal, TIC, pH, CO3 )
       implicit none
 !     Check value: DIC   = 1474.29 mmol-C/m3 <=> 1474.29 umol-C/kgSW,
@@ -761,9 +749,7 @@
      &  Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS, j
 !
       real( r8 ), intent(in   ) ::                                      &
-# ifdef MASKING
      &  rmask( LBi : UBi, LBj : UBj ),                                  &
-# endif
 !     &  hbot(  LBi : UBi, LBj : UBj ),                                  &
      &  zvec(  IminS : ImaxS        ),                                  &
      &  TempC( IminS : ImaxS        ),                                  &
@@ -783,12 +769,10 @@
       integer    :: i
 
       I_LOOP: do i = Istr, Iend
-# ifdef MASKING
         if ( rmask(i, j) .le. tiny(0._r8) ) then ! Dry cell.
           CO3( i ) = 0._r8
           continue
         end if
-# endif
         TempK    = TempC( i ) + 273.15_r8 ! Convert Celsius to Kelvin
         logTempK = log( TempK )
         sqrSal   = sqrt( Sal( i ) )
@@ -853,10 +837,7 @@
 ! Calculate aragonite saturation state
       subroutine aragonite_saturation_state(                            &
      &       Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS,              &
-     &       j,                                                         &
-# ifdef MASKING
-          &       rmask,                                                     &
-# endif
+     &       j, rmask,                                                  &
      &       zvec, TempC, Sal, TIC, pH, aragValue)
       implicit none
 !     This subroutine is based on CO2SYS.m version 2.0 (20 Dec.2016). The
@@ -874,9 +855,7 @@
      &  Istr, Iend, LBi, UBi, LBj, UBj, IminS, ImaxS, j
 !
       real( r8 ), intent(in   ) ::                                      &
-# ifdef MASKING
-      &  rmask( LBi : UBi, LBj : UBj ),                                  &
- # endif
+     &  rmask( LBi : UBi, LBj : UBj ),                                  &
 !    &  hbot(  LBi : UBi, LBj : UBj ),                                  &
      &  zvec(  IminS : ImaxS        ),                                  &
      &  TempC( IminS : ImaxS        ),                                  &
@@ -895,12 +874,10 @@
       integer    :: i
 !
       I_LOOP: do i = Istr, Iend
-# ifdef MASKING
         if ( rmask(i, j) .le. tiny(0._r8) ) then ! Dry cell.
           aragValue( i ) = 0._r8
           continue
         end if
-# endif
 !
         Ca       = 0.02128_r8 / 40.087_r8  * (Sal( i ) / 1.80655_r8)
 !
@@ -1028,9 +1005,7 @@
       integer,  intent(in) :: LBi, UBi, LBj, UBj, IminS, ImaxS
       integer,  intent(in) :: Istr, Iend, j, DoNewton
 !
-# ifdef MASKING
       real(r8), intent(in) :: rmask(LBi:UBi,LBj:UBj)
-# endif
       real(r8), intent(in) :: T(IminS:ImaxS)
       real(r8), intent(in) :: S(IminS:ImaxS)
       real(r8), intent(in) :: TIC(IminS:ImaxS)
@@ -1064,9 +1039,7 @@
 !=======================================================================
 !
       I_LOOP: DO i=Istr,Iend
-# ifdef MASKING
         IF (rmask(i,j).gt.0.0_r8) THEN
-# endif
           Tk=T(i)+273.15_r8
           centiTk=0.01_r8*Tk
           invTk=1.0_r8/Tk
@@ -1281,12 +1254,10 @@
 !  Add two output arguments for storing pCO2surf.
 !
           pCO2(i)=CO2star*1000000.0_r8/ff
-# ifdef MASKING
         ELSE
           pH_kLev(i,j)=0.0_r8
           pCO2(i)=0.0_r8
         END IF
-# endif
       END DO I_LOOP
       end subroutine pCO2_water_RZ
 
