@@ -44,6 +44,7 @@
 
 #define T_PASSIVE /* AL edit to add passive tracers (i.e., dye)*/
 #define ANA_SPFLUX /* AL edit to set surface flux of dye_01 = 0*/
+#define ANA_BPFLUX /* AL edit to set bottom flux of dye_01 = 0*/
 
 /* LiveOcean bio choices */
 #undef BIO_FENNEL /* AL edit to turn off biology */
