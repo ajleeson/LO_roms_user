@@ -42,6 +42,8 @@
 #define ANA_BTFLUX
 #define ANA_BSFLUX
 
+#define T_PASSIVE /* AL edit to add passive tracers (i.e., dye)*/
+
 /* LiveOcean bio choices */
 #define BIO_FENNEL
 #ifdef BIO_FENNEL
