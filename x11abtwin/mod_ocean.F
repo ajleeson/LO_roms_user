@@ -38,6 +38,14 @@
 !                                                                      !
 # if (defined BIO_FENNEL && defined CARBON) || defined ECB
 !  pH           Surface concentration of hydrogen ions.                !
+!
+! ALedit to add pH of control (baseline) and addition (perturbation)
+#  ifdef TALK_ADDITION
+!  pHc          Surface concentration of hydrogen ions (control).      !
+!  pHa          Surface concentration of hydrogen ions (addition).     !
+#  endif
+! end ALedit
+!
 # endif
 # ifdef RED_TIDE
 !  CystIni      Red tide dinoflagellate bottom cyst initial            !
@@ -131,6 +139,12 @@
 # endif
 # if (defined BIO_FENNEL && defined CARBON) || defined ECB
           real(r8), pointer :: pH(:,:)
+! ALedit to add pH of control and addition
+#  ifdef TALK_ADDITION
+          real(r8), pointer :: pHc(:,:)
+          real(r8), pointer :: pHa(:,:)
+#  endif
+! end ALedit
 # endif
 # ifdef RED_TIDE
           real(r8), pointer :: CystIni(:,:)
@@ -510,6 +524,17 @@
 !
       allocate ( OCEAN(ng) % pH(LBi:UBi,LBj:UBj) )
       Dmem(ng)=Dmem(ng)+size2d
+
+! ALedit to allocate memory to story pH of control and addition
+#  ifdef TALK_ADDITION
+      allocate ( OCEAN(ng) % pHc(LBi:UBi,LBj:UBj) )
+      Dmem(ng)=Dmem(ng)+size2d
+
+      allocate ( OCEAN(ng) % pHa(LBi:UBi,LBj:UBj) )
+      Dmem(ng)=Dmem(ng)+size2d
+#  endif
+! end ALedit
+
 # endif
 
 # ifdef RED_TIDE
@@ -1664,6 +1689,12 @@
 #if (defined BIO_FENNEL && defined CARBON && defined SOLVE3D) ||\
     (defined ECB && defined SOLVE3D)
             OCEAN(ng) % pH(i,j) = 8.0_r8
+! ALedit to initialize pH of control and addition
+#  ifdef TALK_ADDITION
+            OCEAN(ng) % pHc(i,j) = 8.0_r8
+            OCEAN(ng) % pHa(i,j) = 8.0_r8
+#  endif
+! end ALedit
 #endif
 #ifdef RED_TIDE
             OCEAN(ng) % CystIni(i,j) = IniVal
