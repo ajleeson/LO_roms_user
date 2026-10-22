@@ -120,6 +120,17 @@
 !  rainG        Latest two-time snapshots of input "rain" grided       !
 !                 data used for interpolation.                         !
 !                                                                      !
+! ALedit to add alkalinity injection forcing                           !
+#if defined TALK_ADDITION && defined TALK_FILE
+!  taflx       Alkalinity addition flux                                !
+!  taflxG      Latest two-time snapshots of alkalinity addition flux   !
+!  takmin      Minimum s-level for alkalinity release                  !
+!  takminG     Latest two-time snapshots of minimum s-level            !
+!  takmax      Maximum s-level for alkalinity release (takmin<takmax)  !
+!  takmaxG     Latest two-time snapshots of maximum s-level            !
+#endif
+! end ALedit                                                           !
+!                                                                      !
 !  Surface tracer fluxes.                                              !
 !                                                                      !
 !  stflux       Forcing surface flux of tracer type variables from     !
@@ -421,6 +432,17 @@
           real(r8), pointer :: svstr_ai(:,:)
           real(r8), pointer :: snow(:,:)
 # endif
+
+! ALedit to add pointer for alkalinity injection forcing
+#if defined TALK_ADDITION && defined TALK_FILE
+          real(r8), pointer :: taflx(:,:)
+          real(r8), pointer :: taflxG(:,:,:)
+          real(r8), pointer :: takmin(:,:)
+          real(r8), pointer :: takminG(:,:,:)
+          real(r8), pointer :: takmax(:,:)
+          real(r8), pointer :: takmaxG(:,:,:)
+#endif
+! end ALedit
 
           real(r8), pointer :: stflux(:,:,:)
 # if !defined ANA_STFLUX || !defined ANA_SSFLUX || \
@@ -915,6 +937,17 @@
       allocate ( FORCES(ng) % svstr_ai(LBi:UBi,LBj:UBj) )
       Dmem(ng)=Dmem(ng)+size2d
 # endif
+
+! ALedit to allocate memory for alkalinity forcing
+#if defined TALK_ADDITION && defined TALK_FILE
+      allocate ( FORCES(ng) % taflx(LBi:UBi,LBj:UBj) )
+      allocate ( FORCES(ng) % taflxG(LBi:UBi,LBj:UBj,2) )
+      allocate ( FORCES(ng) % takmin(LBi:UBi,LBj:UBj) )
+      allocate ( FORCES(ng) % takminG(LBi:UBi,LBj:UBj,2) )
+      allocate ( FORCES(ng) % takmax(LBi:UBi,LBj:UBj) )
+      allocate ( FORCES(ng) % takmaxG(LBi:UBi,LBj:UBj,2) )
+#endif
+! end ALedit
 
       allocate ( FORCES(ng) % stflux(LBi:UBi,LBj:UBj,NT(ng)) )
       Dmem(ng)=Dmem(ng)+REAL(NT(ng),r8)*size2d
@@ -2031,6 +2064,21 @@
             FORCES(ng) % sustr_ao(i,j) = IniVal
             FORCES(ng) % svstr_ao(i,j) = IniVal
 # endif
+
+! ALedit to initialize forcing terms (default val is zero)
+#if defined TALK_ADDITION && defined TALK_FILE
+            FORCES(ng) % taflx(i,j) = IniVal
+            FORCES(ng) % taflxG(i,j,1) = IniVal
+            FORCES(ng) % taflxG(i,j,2) = IniVal
+            FORCES(ng) % takmin(i,j) = IniVal
+            FORCES(ng) % takminG(i,j,1) = IniVal
+            FORCES(ng) % takminG(i,j,2) = IniVal
+            FORCES(ng) % takmax(i,j) = IniVal
+            FORCES(ng) % takmaxG(i,j,1) = IniVal
+            FORCES(ng) % takmaxG(i,j,2) = IniVal
+#endif
+! end ALedit
+
 # if !defined LONGWAVE && defined BULK_FLUXES
             FORCES(ng) % lrflxG(i,j,1) = IniVal
             FORCES(ng) % lrflxG(i,j,2) = IniVal
