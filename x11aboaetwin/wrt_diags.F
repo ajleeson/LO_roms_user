@@ -323,7 +323,16 @@
       DO ivar=1,NDbio2d
         ifield=iDbio2(ivar)
         IF (Dout(ifield,ng)) THEN
+!
+! ALedit to write pCO2c and pCO2a instead of pCO2 if
+! we add alkalinity for OAE
+#   ifdef TALK_ADDITION
+          IF ((ivar.eq.ipCO2c).or.(ivar.eq.ipCO2a)) THEN
+#   else
           IF (ivar.eq.ipCO2) THEN
+#   endif
+! end ALedit
+!         IF (ivar.eq.ipCO2) THEN
             scale=1.0_dp
           ELSE
             scale=1.0_dp/dtBIO                       ! mmole m-2 day-1
