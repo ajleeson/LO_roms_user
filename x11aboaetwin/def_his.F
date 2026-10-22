@@ -1747,6 +1747,31 @@
 #  endif
         END IF
 # endif
+!
+! ALedit to define alkalinity addition flux
+# if defined TALK_ADDITION && defined TALK_FILE
+!
+!  Define alkalinity addition.
+!
+        IF (Hout(idAtrc,ng)) THEN
+          Vinfo( 1)=Vname(1,idAtrc)
+          Vinfo( 2)=Vname(2,idAtrc)
+          Vinfo( 3)=Vname(3,idAtrc)
+          Vinfo(14)=Vname(4,idAtrc)
+          Vinfo(16)=Vname(1,idtime)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(21)=Vname(6,idAtrc)
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idAtrc,ng),r8)
+          status=def_var(ng, model, HIS(ng)%ncid, HIS(ng)%Vid(idAtrc), &
+     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+          IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+        END IF
+# endif
+! end ALedit
+!
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
 !
 !  Define surface air pressure.
@@ -2429,6 +2454,13 @@
             got_var(idMtls)=.TRUE.
             HIS(ng)%Vid(idMtls)=var_id(i)
 # endif
+! ALedit to check if there is already alk addition in his file
+# if defined TALK_ADDITION && defined TALK_FILE
+          ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idAtrc))) THEN
+            got_var(idAtrc)=.TRUE.
+            HIS(ng)%Vid(idAtrc)=var_id(i)
+# endif
+! end ALedit
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
           ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idPair))) THEN
             got_var(idPair)=.TRUE.
@@ -2877,6 +2909,16 @@
           RETURN
         END IF
 # endif
+! ALedit to write alk addition to his file
+# if defined TALK_ADDITION && defined TALK_FILE
+        IF (.not.got_var(idAtrc).and.Hout(idAtrc,ng)) THEN
+          IF (Master) WRITE (stdout,70) TRIM(Vname(1,idAtrc)),          &
+     &                                  TRIM(ncname)
+          exit_flag=3
+          RETURN
+        END IF
+# endif
+! end ALedit
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
         IF (.not.got_var(idPair).and.Hout(idPair,ng)) THEN
           IF (Master) WRITE (stdout,70) TRIM(Vname(1,idPair)),          &
