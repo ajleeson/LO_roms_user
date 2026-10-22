@@ -2987,6 +2987,28 @@
       is=LEN_TRIM(Coptions)+1
       Coptions(is:is+15)=' SWAN_COUPLING,'
 #endif
+! ALedit to add alkalinity addition option
+#if defined TALK_ADDITION && defined TALK_FILE
+      IF (Master) WRITE (stdout,20) 'TA_FLUX',                          &
+     &   'alkalinity addition flux.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+9)=' TA_FLUX,'
+#endif
+# ifdef TALK_ADDITION
+!
+      IF (Master) WRITE (stdout,20) 'TALK_ADDITION',                    &
+     &   'Alkalinity addition module.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+15)=' TALK_ADDITION,'
+#  ifdef TALK_FILE
+!
+      IF (Master) WRITE (stdout,20) 'TALK_FILE',                        &
+     &   'Alkalinity addition file.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+11)=' TALK_FILE,'
+#  endif
+# endif
+! end ALedit
 #if (defined CARBON && defined BIO_FENNEL) || defined ECB
 # ifdef TALK_NONCONSERV
 !
