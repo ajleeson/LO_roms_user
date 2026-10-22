@@ -482,6 +482,8 @@
 ** RW14_OXYGEN_SC          if O2  Schmidt number from Wanninkhof (2014)      **
 ** SANDS_PROXY_ISS         if sands as a proxy to ISS in light attenuation   **
 ** TALK_NONCONSERV         if nonconservative computation of alkalinity      **
+** TALK_ADDITION           if TA addition                                    **
+** TALK_FILE               if TA added from .nc foring file                  **
 **                                                                           **
 ** Hypoxia ecosysten model OPTIONS:                                          **
 **                                                                           **
