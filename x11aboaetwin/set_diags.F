@@ -492,7 +492,15 @@
 # ifdef DIAGNOSTICS_BIO
 #  if defined BIO_FENNEL || defined ECB || defined HYPOXIA_SRM
         DO idiag=1,NDbio2d
-          IF (idiag.ne.ipCO2) THEN
+! ALedit to calculate pCO2c and pCO2a if we add alkalinity for OAE,
+! otherwise calclate the normal pCO2
+#   ifdef TALK_ADDITION
+          IF ((idiag.ne.ipCO2c).and.(idiag.ne.ipCO2a)) THEN
+#   else
+          IF (idiag.ne.ipCO2c) THEN
+#    endif
+! end ALedit
+!         IF (idiag.ne.ipCO2) THEN
             DO j=JstrR,JendR
               DO i=IstrR,IendR
                 DIAGS(ng)%DiaBio2d(i,j,idiag)=rfac(i,j)*                &
