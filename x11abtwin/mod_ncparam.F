@@ -192,6 +192,16 @@
 !  ORDER to guarantee no repetitive values. If we need a set of indices
 !  together, please choose the proper leading letters.
 !
+
+! ALedit to add alkalinity addition
+! I recognize that these are not in alphabetical order,
+! but it makes sense to keep the alkalinity addition variables together.
+#if defined TALK_ADDITION && defined TALK_FILE
+        integer  :: idAtrc       ! alkalinity addition rate
+        integer  :: idkmin       ! minimum s-level for addition
+        integer  :: idkmax       ! maximum s-level for addition
+#endif
+! end ALedit
       integer  :: idangR        ! angle between XI-axis and EAST
       integer  :: idbath        ! time-dependent bathymetry
       integer  :: idBgEr        ! background error at observations
@@ -2117,7 +2127,19 @@
             id3dPV=varid
           CASE ('id3dRV')
             id3dRV=varid
-#ifdef DIAGNOSTICS_UV
+
+! ALedit to add alkalinity addition indices
+#if defined TALK_ADDITION && defined TALK_FILE
+          CASE ('idAtrc')
+            idAtrc=varid
+          CASE ('idkmin')
+            idkmin=varid
+          CASE ('idkmax')
+            idkmax=varid
+#endif
+! end ALedit
+
+            #ifdef DIAGNOSTICS_UV
           CASE ('idDu2d(M2pgrd)')
             idDu2d(M2pgrd)=varid
           CASE ('idDv2d(M2pgrd)')
