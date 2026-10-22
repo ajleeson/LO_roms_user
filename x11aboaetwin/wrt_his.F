@@ -1831,6 +1831,34 @@
 #  endif
       END IF
 # endif
+! ALedit to write alkalinity addition to his file
+# if defined TALK_ADDITION && defined TALK_FILE
+!
+!  Write out alkalinity addition.
+!
+      IF (Hout(idAtrc,ng)) THEN
+        scale=1.0_r8
+        gtype=gfactor*r2dvar
+        status=nf_fwrite2d(ng, model, HIS(ng)%ncid,                      &
+     &                     HIS(ng)%Vid(idAtrc),                         &
+     &                     HIS(ng)%Rindex, gtype,                       &
+     &                     LBi, UBi, LBj, UBj, scale,                   &
+#  ifdef MASKING
+     &                     GRID(ng) % rmask_full,                       &
+#  endif
+     &                     FORCES(ng) % taflx)
+        IF (FoundError(status, nf90_noerr, __LINE__, MyFile)) THEN
+          IF (Master) THEN
+            WRITE (stdout,20) TRIM(Vname(1,idAtrc)), HIS(ng)%Rindex
+          END IF
+          exit_flag=3
+          ioerror=status
+          RETURN
+        END IF
+      END IF
+# endif
+! end ALedit
+
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
 !
 !  Write out surface air pressure.
