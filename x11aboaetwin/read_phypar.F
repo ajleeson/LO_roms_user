@@ -2107,6 +2107,20 @@
               Hout(idACtp,1:Ngrids)=Lswitch(1:Ngrids)
 #endif
 #ifdef SOLVE3D
+
+! ALedit to write alkalinity addition tracers
+# if defined TALK_ADDITION && defined TALK_FILE
+            CASE ('Hout(idAtrc)')
+              IF (idAtrc.eq.0) THEN
+                IF (Master) WRITE (out,280) 'idAtrc'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idAtrc,:))
+              Hout(idAtrc,1:Ngrids)=Lswitch(1:Ngrids)
+# endif
+! end ALedit
+
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
             CASE ('Hout(idPair)')
               IF (idPair.eq.0) THEN
@@ -2679,6 +2693,15 @@
               Npts=load_l(Nval, Cval, Ngrids, Lswitch)
               Qout(idTair,1:Ngrids)=Lswitch(1:Ngrids)
 # endif
+
+! ALedit to write alkalinity addition
+# if defined TALK_ADDITION && defined TALK_FILE
+            CASE ('Qout(idAtrc)')
+              Npts=load_l(Nval, Cval, Ngrids, Lswitch)
+              Qout(idAtrc,1:Ngrids)=Lswitch(1:Ngrids)
+# endif
+! end ALedit
+
 # if defined BULK_FLUXES || defined ECOSIM
             CASE ('Qout(idUair)')
               Npts=load_l(Nval, Cval, Ngrids, Lswitch)
@@ -3005,6 +3028,15 @@
               Aout(idVwav,1:Ngrids)=Lswitch(1:Ngrids)
 # endif
 # ifdef SOLVE3D
+
+! ALedit to write alkalinity addition
+# if defined TALK_ADDITION && defined TALK_FILE
+            CASE ('Aout(idAtrc)')
+              Npts=load_l(Nval, Cval, Ngrids, Lswitch)
+              Aout(idAtrc,1:Ngrids)=Lswitch(1:Ngrids)
+# endif
+! end ALedit
+
 #  if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
             CASE ('Aout(idPair)')
               Npts=load_l(Nval, Cval, Ngrids, Lswitch)
@@ -6388,6 +6420,15 @@
             END DO
 #endif
 #ifdef SOLVE3D
+
+! ALedit to report alkalinity addition in log file
+# if defined TALK_ADDITION && defined TALK_FILE
+          IF (Hout(idAtrc,ng)) WRITE (out,170) Hout(idAtrc,ng),         &
+     &       'Hout(idAtrc)',                                            &
+     &       'Write out alkalinity addition.'
+# endif
+! end ALedit
+
 # if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
             IF (Hout(idPair,ng)) WRITE (out,170) Hout(idPair,ng),       &
      &         'Hout(idPair)',                                          &
@@ -7035,6 +7076,15 @@
             END DO
 # endif
 # ifdef SOLVE3D
+
+! ALedit to report alkalinity addition in log file
+# if defined TALK_ADDITION && defined TALK_FILE
+          IF (Aout(idAtrc,ng)) WRITE (out,170) Aout(idAtrc,ng),         &
+     &       'Aout(idAtrc)',                                            &
+     &       'Write out averaged alkalinity addition.'
+# endif
+! end ALedit
+
 #  if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS
             IF (Aout(idPair,ng)) WRITE (out,170) Aout(idPair,ng),       &
      &         'Aout(idPair)',                                          &
