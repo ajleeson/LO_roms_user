@@ -33,6 +33,12 @@
       integer :: iTrcStr, iTrcEnd
       integer :: i, ifield, igrid, itracer, itrc, ng, nline, status
 
+! ALedit to define number of alkalinity feedstocks (we use one in pur alkalinity form)
+#ifdef TALK_ADDITION
+      integer :: ntap
+#endif
+! end ALedit
+
       logical, dimension(Ngrids) :: Lbio
       logical, dimension(NBT,Ngrids) :: Ltrc
 
@@ -141,6 +147,28 @@
               Npts=load_r(Nval, Rval, Ngrids, wSDet)
             CASE ('pCO2air')
               Npts=load_r(Nval, Rval, Ngrids, pCO2air)
+
+! ALedit to read alkalinity inputs from .in file if TALK_FILE is not defined
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+            CASE ('iloc_alkalinity')
+              Npts=load_r(Nval, Rval, Ngrids, iloc_alkalinity)
+            CASE ('jloc_alkalinity')
+              Npts=load_r(Nval, Rval, Ngrids, jloc_alkalinity)
+            CASE ('kloc_alkalinity_min')
+              Npts=load_r(Nval, Rval, Ngrids, kloc_alkalinity_min)
+            CASE ('kloc_alkalinity_max')
+              Npts=load_r(Nval, Rval, Ngrids, kloc_alkalinity_max)
+            CASE ('alkalinity_load')
+              Npts=load_r(Nval, Rval, Ngrids, alkalinity_load)
+            CASE ('alkalinity_startload')
+              Npts=load_r(Nval, Rval, Ngrids, alkalinity_startload)
+            CASE ('alkalinity_endload')
+              Npts=load_r(Nval, Rval, Ngrids, alkalinity_endload)
+# endif
+#endif
+! end ALedit
+
             CASE ('TNU2')
               Npts=load_r(Nval, Rval, NBT, Ngrids, Rbio)
               DO ng=1,Ngrids
@@ -521,17 +549,30 @@
 #endif
 #ifdef DIAGNOSTICS_BIO
 # ifdef CARBON
-            CASE ('Dout(iCOfx)')
-              IF (iDbio2(iCOfx).eq.0) THEN
-                IF (Master) WRITE (out,40) 'iDbio2(iCOfx)'
+! ALedit to change var identifier of air-sea CO2 flux from iCOfx to iCfxc 
+            CASE ('Dout(iCfxc)')
+              IF (iDbio2(iCfxc).eq.0) THEN
+                IF (Master) WRITE (out,40) 'iDbio2(iCfxc)'
                 exit_flag=5
                 RETURN
               END IF
               Npts=load_l(Nval, Cval, Ngrids, Lbio)
-              i=iDbio2(iCOfx)
+              i=iDbio2(iCfxc)
               DO ng=1,Ngrids
                 Dout(i,ng)=Lbio(ng)
               END DO
+!            CASE ('Dout(iCOfx)')
+!              IF (iDbio2(iCOfx).eq.0) THEN
+!                IF (Master) WRITE (out,40) 'iDbio2(iCOfx)'
+!                exit_flag=5
+!                RETURN
+!              END IF
+!              Npts=load_l(Nval, Cval, Ngrids, Lbio)
+!              i=iDbio2(iCOfx)
+!              DO ng=1,Ngrids
+!                Dout(i,ng)=Lbio(ng)
+!              END DO
+! end ALedit
 # endif
 # ifdef DENITRIFICATION
             CASE ('Dout(iDNIT)')
@@ -547,18 +588,59 @@
               END DO
 # endif
 # ifdef CARBON
-            CASE ('Dout(ipCO2)')
-              IF (iDbio2(ipCO2).eq.0) THEN
-                IF (Master) WRITE (out,40) 'iDbio2(ipCO2)'
+! ALedit to change var identifier of pCO2 flux from ipCO2 to ipCO2c 
+            CASE ('Dout(ipCO2c)')
+              IF (iDbio2(ipCO2c).eq.0) THEN
+                IF (Master) WRITE (out,40) 'iDbio2(ipCO2c)'
                 exit_flag=5
                 RETURN
               END IF
               Npts=load_l(Nval, Cval, Ngrids, Lbio)
-              i=iDbio2(ipCO2)
+              i=iDbio2(ipCO2c)
               DO ng=1,Ngrids
                 Dout(i,ng)=Lbio(ng)
               END DO
+!            CASE ('Dout(ipCO2)')
+!              IF (iDbio2(ipCO2).eq.0) THEN
+!                IF (Master) WRITE (out,40) 'iDbio2(ipCO2)'
+!                exit_flag=5
+!                RETURN
+!              END IF
+!              Npts=load_l(Nval, Cval, Ngrids, Lbio)
+!              i=iDbio2(ipCO2)
+!              DO ng=1,Ngrids
+!                Dout(i,ng)=Lbio(ng)
+!              END DO
+! end ALedit
+
+! ALedit to get CO2 flux and pCO2 for addition condition
+#  ifdef TALK_ADDITION
+            CASE ('Dout(iCfxa)')
+              IF (iDbio2(iCfxa).eq.0) THEN
+                IF (Master) WRITE (out,40) 'iDbio2(iCfxa)'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Lbio)
+              i=iDbio2(iCfxa)
+              DO ng=1,Ngrids
+                Dout(i,ng)=Lbio(ng)
+              END DO
+            CASE ('Dout(ipCO2a)')
+              IF (iDbio2(ipCO2a).eq.0) THEN
+                IF (Master) WRITE (out,40) 'iDbio2(ipCO2a)'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Lbio)
+              i=iDbio2(ipCO2a)
+              DO ng=1,Ngrids
+                Dout(i,ng)=Lbio(ng)
+              END DO
+#  endif
 # endif
+! end ALedit
+
 # ifdef OXYGEN
             CASE ('Dout(iO2fx)')
               IF (iDbio2(iO2fx).eq.0) THEN
@@ -706,7 +788,33 @@
      &            'Small detritus sinking velocity (m/day).'
             WRITE (out,80) pCO2air(ng), 'pCO2air',                      &
      &            'CO2 partial pressure in air (ppm by volume).'
-#ifdef TS_DIF2
+
+! ALedit to add alkalinity addition vars
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+            WRITE (out,80) iloc_alkalinity(ng), 'iloc_alkalinity',       &
+      &            'longitude (i) index for alkalinity addition'
+            WRITE (out,80) jloc_alkalinity(ng), 'jloc_alkalinity',       &
+      &            'latitude (j) index for alkalinity addition'
+            WRITE (out,80) kloc_alkalinity_min(ng),                      &
+      &                   'kloc_alkalinity_min',                         &
+      &            'minimum vertical (k) index for alkalinity addition'
+            WRITE (out,80) kloc_alkalinity_max(ng),                      &
+      &                   'kloc_alkalinity_max',                         &
+      &            'maximum vertical (k) index for alkalinity addition'
+            WRITE (out,80) alkalinity_load(ng), 'alkalinity_load',       &
+      &            'alkalinity flux (mol/second).'
+            WRITE (out,80) alkalinity_startload(ng),                     &
+      &            'alkalinity_startload',                               &
+      &            'starting time of alkalinity addition'
+            WRITE (out,80) alkalinity_endload(ng),                       &
+      &            'alkalinity_endload',                                 &
+      &            'ending time of alkalinity addition'
+# endif
+#endif
+! end ALedit
+
+     #ifdef TS_DIF2
             DO itrc=1,NBT
               i=idbio(itrc)
               WRITE (out,100) nl_tnu2(i,ng), 'nl_tnu2', i,              &
