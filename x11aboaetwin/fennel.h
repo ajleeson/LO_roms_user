@@ -187,7 +187,20 @@
      &                  GRID(ng) % z_r,                                 &
      &                  GRID(ng) % z_w,                                 &
      &                  FORCES(ng) % srflx,                             &
-#if defined CARBON || defined OXYGEN
+
+! ALedit to initialize alkalinity fluxes
+#if defined TALK_ADDITION
+     &                   GRID(ng) % pm,                                 &
+     &                   GRID(ng) % pn,                                 &
+# ifdef TALK_FILE
+     &                   FORCES(ng) % taflx,                            &
+     &                   FORCES(ng) % takmin,                           &
+     &                   FORCES(ng) % takmax,                           &
+# endif
+#endif
+! end ALedit
+
+     #if defined CARBON || defined OXYGEN
 # ifdef BULK_FLUXES
      &                  FORCES(ng) % Uwind,                             &
      &                  FORCES(ng) % Vwind,                             &
@@ -198,6 +211,12 @@
 #endif
 #ifdef CARBON
      &                  OCEAN(ng) % pH,                                 &
+! ALedit to add control and addition pH
+     &                  OCEAN(ng) % pHc,                                &
+# ifdef TALK_ADDITION
+     &                  OCEAN(ng) % pHa,                                &
+# endif
+! end ALedit
 #endif
 #ifdef DIAGNOSTICS_BIO
      &                  DIAGS(ng) % DiaBio2d,                           &
@@ -227,6 +246,18 @@
 # endif
 #endif
      &                        Hz, z_r, z_w, srflx,                      &
+
+! ALedit to declare alkalinity addition vars
+# ifdef TALK_ADDITION
+     &                         pm, pn,                                  &
+#  ifdef TALK_FILE
+     &                         taflx,                                   &
+     &                         takmin,                                  &
+     &                         takmax,                                  &
+#  endif
+# endif
+! end ALedit
+
 #if defined CARBON || defined OXYGEN
 # ifdef BULK_FLUXES
      &                        Uwind, Vwind,                             &
@@ -235,7 +266,13 @@
 # endif
 #endif
 #ifdef CARBON
-     &                        pH,                                       &
+! ALedit to declare control and addition pH
+     &                        pH, pHc,                                  &
+# ifdef TALK_ADDITION
+     &                        pHa,                                      &
+# endif
+!     &                        pH,                                       &
+! end ALedit
 #endif
 #ifdef DIAGNOSTICS_BIO
      &                        DiaBio2d, DiaBio3d,                       &
@@ -286,6 +323,19 @@
 # endif
 # ifdef CARBON
       real(r8), intent(inout) :: pH(LBi:,LBj:)
+! ALedit to add OAE vars
+      real(r8), intent(inout) :: pHc(LBi:,LBj:)
+#  ifdef TALK_ADDITION
+      real(r8), intent(inout) :: pHa(LBi:,LBj:)
+      real(r8), intent(in) :: pm(LBi:,LBj:)
+      real(r8), intent(in) :: pn(LBi:,LBj:)
+#   ifdef TALK_FILE
+      real(r8), intent(in) :: taflx(LBi:,LBj:)
+      real(r8), intent(in) :: takmin(LBi:,LBj:)
+      real(r8), intent(in) :: takmax(LBi:,LBj:)
+#   endif
+#  endif
+! end ALedit
 # endif
 # ifdef DIAGNOSTICS_BIO
       real(r8), intent(inout) :: DiaBio2d(LBi:,LBj:,:)
@@ -317,6 +367,19 @@
 # endif
 # ifdef CARBON
       real(r8), intent(inout) :: pH(LBi:UBi,LBj:UBj)
+! ALedit to add OAE vars
+      real(r8), intent(inout) :: pHc(LBi:UBi,LBj:UBj)
+#  ifdef TALK_ADDITION
+      real(r8), intent(inout) :: pHa(LBi:UBi,LBj:UBj)
+      real(r8), intent(in) :: pm(LBi:UBi,LBj:UBj)
+      real(r8), intent(in) :: pn(LBi:UBi,LBj:UBj)
+#   ifdef TALK_FILE
+      real(r8), intent(in) :: taflx(LBi:UBi,LBj:UBj)
+      real(r8), intent(in) :: takmin(LBi:UBi,LBj:UBj)
+      real(r8), intent(in) :: takmax(LBi:UBi,LBj:UBj)
+#   endif
+#  endif
+! end ALedit
 # endif
 # ifdef DIAGNOSTICS_BIO
       real(r8), intent(inout) :: DiaBio2d(LBi:UBi,LBj:UBj,NDbio2d)
@@ -455,6 +518,12 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
       real(r8) :: cff1_an, NO3loss
 ! End PM Edit
 
+! ALedit to add thickness of alkalinity addition
+#ifdef TALK_ADDITION
+      real(r8) :: Hadd
+#endif
+! end ALedit
+
 #ifdef DIAGNOSTICS_BIO
       real(r8) :: fiter
 #endif
@@ -466,7 +535,10 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 
 #ifdef CARBON
       real(r8) :: C_Flux_RemineL, C_Flux_RemineS, C_Flux_RemineR
-      real(r8) :: CO2_Flux, CO2_sol, SchmidtN, TempK
+      ! ALedit to define contol and addition flux
+      ! real(r8) :: CO2_Flux, CO2_sol, SchmidtN, TempK
+      real(r8) :: CO2c_Flx, CO2a_Flx, CO2_sol, SchmidtN, TempK
+      ! end ALedit
 #endif
 
       real(r8) :: N_Flux_Assim
@@ -485,6 +557,13 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
       real(r8), dimension(IminS:ImaxS) :: PARsur
 #ifdef CARBON
       real(r8), dimension(IminS:ImaxS) :: pCO2
+! ALedit to add control and addition pCO2
+      real(r8), dimension(IminS:ImaxS) :: pCO2c
+# ifdef TALK_ADDITION
+      real(r8), dimension(IminS:ImaxS) :: pCO2a
+      real(r8) :: dtsec
+# endif
+! end ALedit
 #endif
 
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio
@@ -554,6 +633,9 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !  Set time-stepping according to the number of iterations.
 !
       dtdays=dt(ng)*sec2day/REAL(BioIter(ng),r8)
+      ! ALedit get dt in seconds
+      dtsec=dt(ng)/REAL(BioIter(ng),r8)
+      ! end ALedit
 #ifdef DIAGNOSTICS_BIO
 !
 !  A factor to account for the number of iterations in accumulating
@@ -767,6 +849,20 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !  however, do not improve the accuaracy of the solution.
 !
         ITER_LOOP: DO Iter=1,BioIter(ng)
+
+! ALedit to get thickness of alkalinity addition layer
+#ifdef TALK_ADDITION
+!-----------------------------------------------------------------------
+!  Get thickness of alkalinity addition layer (if no .nc file)
+!-----------------------------------------------------------------------
+# if !defined TALK_FILE
+          IF (j.eq.jloc_alkalinity(ng)) THEN
+            Hadd=SUM(Hz(iloc_alkalinity(ng),jloc_alkalinity(ng),        &
+     &                kloc_alkalinity_min(ng):kloc_alkalinity_max(ng)))
+          END IF
+# endif
+#endif
+! end ALedit
 !
 !-----------------------------------------------------------------------
 !  Light-limited computations.
@@ -1286,6 +1382,43 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
             END DO
           END DO
 #endif
+
+! ALedit to get alkaliniy forcing and add to dTA
+!-----------------------------------------------------------------------
+!  Compute external source of alkalinity (mol/second)
+!-----------------------------------------------------------------------
+!
+#ifdef TALK_ADDITION
+               cff1=0.0_r8
+               cff=0.0_r8
+          DO k=1,N(ng)
+            DO i=Istr,Iend
+# ifdef TALK_FILE
+! Add Alkalinity from river file
+              IF ((taflx(i,j).gt.0.0_r8)                                &
+     &          .and. (k.ge.takmin(i,j)) .and. (k.le.takmax(i,j))) THEN
+               cff=pm(i,j)*pn(i,j)
+               Hadd=SUM(Hz(i,j,takmin(i,j):takmax(i,j)))
+               cff1=taflx(i,j) ! mol/s
+# else
+! Alkalinity flux (constant) is defined in bio_Banas.in
+              IF (i.eq.iloc_alkalinity(ng)                              &
+     &          .and. j.eq.jloc_alkalinity(ng)                          &
+     &          .and. k.ge.kloc_alkalinity_min(ng)                      &
+     &          .and. k.le.kloc_alkalinity_max(ng)                      &
+     &          .and. tdays(ng) .ge. alkalinity_startload(ng)           &
+     &          .and. tdays(ng) .le. alkalinity_endload(ng)) THEN
+                 cff=pm(i,j)*pn(i,j)
+                 cff1=alkalinity_load(ng) ! mol/s
+# endif
+               cff2=cff1*1000.0_r8*dtsec*cff/Hadd ! mmol/m3 - concentration of alk added
+               Bio(i,k,idTA)=Bio(i,k,idTA)+cff2 ! Add added alkalinity to dTA
+              END IF
+#endif
+            END DO
+          END DO
+! end ALedit
+
 #ifdef OXYGEN
 !
 !-----------------------------------------------------------------------
@@ -1394,6 +1527,10 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 !  surface.
 !
           k=N(ng)
+! ALedit to set pH and pCO2 to be the control values
+          pH(IminS:,j)=pHc(IminS:,j)
+          pCO2(IminS:)=pCO2c(IminS:)
+! end ALedit
 # ifdef pCO2_RZ
           CALL pCO2_water_RZ (Istr, Iend, LBi, UBi, LBj, UBj,           &
      &                        IminS, ImaxS, j, DoNewton,                &
@@ -1403,6 +1540,30 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
      &                        Bio(IminS:,k,itemp), Bio(IminS:,k,isalt), &
      &                        Bio(IminS:,k,iTIC_), Bio(IminS:,k,iTAlk), &
      &                        pH, pCO2)
+
+! ALedit to set control pH and pCO2 to be the new value
+          pHc(IminS:,j)=pH(IminS:,j)
+          pCO2c(IminS:)=pCO2(IminS:)
+! end ALedit
+
+! ALedit to twin dTIC and dTA in the the pCO2_water_RZ function
+#  if defined TALK_ADDITION
+          pH(IminS:,j)=pHa(IminS:,j)
+          pCO2(IminS:)=pCO2a(IminS:)
+          CALL pCO2_water_RZ (Istr, Iend, LBi, UBi, LBj, UBj,           &
+     &                        IminS, ImaxS, j, DoNewton,                &
+#   ifdef MASKING
+     &                        rmask,                                    &
+#   endif
+     &                        Bio(IminS:,k,itemp), Bio(IminS:,k,isalt), &
+     &                        Bio(IminS:,k,iTIC_)+Bio(IminS:,k,idTIC),  &
+     &                        Bio(IminS:,k,iTAlk)+Bio(IminS:,k,idTA),   &
+     &                        pH, pCO2)
+          pHa(IminS:,j)=pH(IminS:,j)
+          pCO2a(IminS:)=pCO2(IminS:)
+#  endif
+! end ALedit
+     
 # else
           CALL pCO2_water (Istr, Iend, LBi, UBi, LBj, UBj,              &
      &                     IminS, ImaxS, j, DoNewton,                   &
@@ -1412,6 +1573,26 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
      &                     Bio(IminS:,k,itemp), Bio(IminS:,k,isalt),    &
      &                     Bio(IminS:,k,iTIC_), Bio(IminS:,k,iTAlk),    &
      &                     0.0_r8, 0.0_r8, pH, pCO2)
+! ALedit to twin
+          pHc(IminS:,j)=pH(IminS:,j)
+          pCO2c(IminS:)=pCO2(IminS:)
+
+#  if defined TALK_ADDITION
+          pH(IminS:,j)=pHa(IminS:,j)
+          pCO2(IminS:)=pCO2a(IminS:)
+          CALL pCO2_water (Istr, Iend, LBi, UBi, LBj, UBj,              &
+     &                     IminS, ImaxS, j, DoNewton,                   &
+#  ifdef MASKING
+     &                     rmask,                                       &
+#  endif
+     &                     Bio(IminS:,k,itemp), Bio(IminS:,k,isalt),    &
+     &                     Bio(IminS:,k,iTIC_)+Bio(IminS:,k,idTIC),     &
+     &                     Bio(IminS:,k,iTAlk)+Bio(IminS:,k,idTA),      &
+     &                     0.0_r8, 0.0_r8, pH, pCO2)
+          pHa(IminS:,j)=pH(IminS:,j)
+          pCO2a(IminS:)=pCO2(IminS:)
+#  endif
+! end ALedit
 # endif
 !
 !  Compute surface CO2 gas exchange.
@@ -1452,29 +1633,69 @@ real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
 # if defined PCO2AIR_DATA
             pCO2air_secular=380.464_r8+9.321_r8*SIN(pi2*yday/365.25_r8+ &
      &                      1.068_r8)
-            CO2_Flux=cff3*CO2_sol*(pCO2air_secular-pCO2(i))
+! ALedit to twin CO2 flux
+            !CO2_Flux=cff3*CO2_sol*(pCO2air_secular-pCO2(i))
+            CO2c_Flx=cff3*CO2_sol*(pCO2air_secular-pCO2c(i))
+#   if defined TALK_ADDITION
+            CO2a_Flx=cff3*CO2_sol*(pCO2air_secular-pCO2a(i))
+#   endif
+! end ALedit
 # elif defined PCO2AIR_SECULAR
             pCO2air_secular=D0+D1*pmonth*12.0_r8+                       &
      &                         D2*SIN(pi2*pmonth+D3)+                   &
      &                         D4*SIN(pi2*pmonth+D5)+                   &
      &                         D6*SIN(pi2*pmonth+D7)
-            CO2_Flux=cff3*CO2_sol*(pCO2air_secular-pCO2(i))
+! ALedit to twin CO2 flux
+            !CO2_Flux=cff3*CO2_sol*(pCO2air_secular-pCO2(i))
+            CO2c_Flx=cff3*CO2_sol*(pCO2air_secular-pCO2c(i))
+#   if defined TALK_ADDITION
+            CO2a_Flx=cff3*CO2_sol*(pCO2air_secular-pCO2a(i))
+#   endif
+! end ALedit
 # else
-            CO2_Flux=cff3*CO2_sol*(pCO2air(ng)-pCO2(i))
+! ALedit to twin CO2 flux
+            !CO2_Flux=cff3*CO2_sol*(pCO2air(ng)-pCO2(i))
+            CO2c_Flx=cff3*CO2_sol*(pCO2air(ng)-pCO2c(i))
+#   if defined TALK_ADDITION
+            CO2a_Flx=cff3*CO2_sol*(pCO2air(ng)-pCO2a(i))
+#   endif
+! end ALedit
 # endif
+! ALedit to label control CO2 flux with c and addition with a, and also twin
             Bio(i,k,iTIC_)=Bio(i,k,iTIC_)+                              &
-     &                     CO2_Flux*Hz_inv(i,k)
+     !&                     CO2_Flux*Hz_inv(i,k)
+     &                     CO2c_Flx*Hz_inv(i,k)
 # ifdef DIAGNOSTICS_BIO
-            DiaBio2d(i,j,iCOfx)=DiaBio2d(i,j,iCOfx)+                    &
+            !DiaBio2d(i,j,iCOfx)=DiaBio2d(i,j,iCOfx)+                    &
+            DiaBio2d(i,j,iCfxc)=DiaBio2d(i,j,iCfxc)+                    &
 #  ifdef WET_DRY
      &                          rmask_full(i,j)*                        &
 #  endif
-     &                          CO2_Flux*fiter
-            DiaBio2d(i,j,ipCO2)=pCO2(i)
+     !&                          CO2_Flux*fiter
+     !       DiaBio2d(i,j,ipCO2)=pCO2(i)
+     &                          CO2c_Flx*fiter
+            DiaBio2d(i,j,ipCO2c)=pCO2c(i)
 #  ifdef WET_DRY
-            DiaBio2d(i,j,ipCO2)=DiaBio2d(i,j,ipCO2)*rmask_full(i,j)
+            !DiaBio2d(i,j,ipCO2)=DiaBio2d(i,j,ipCO2)*rmask_full(i,j)
+            DiaBio2d(i,j,ipCO2c)=DiaBio2d(i,j,ipCO2c)*rmask_full(i,j)
 #  endif
 # endif
+# if defined TALK_ADDITION
+            Bio(i,k,idTIC)=Bio(i,k,idTIC)+                              &
+     &                     (CO2a_Flx-CO2c_Flx)*Hz_inv(i,k)
+#   ifdef DIAGNOSTICS_BIO
+            DiaBio2d(i,j,iCfxa)=DiaBio2d(i,j,iCfxa)+                    &
+#    ifdef WET_DRY
+     &                          rmask_full(i,j)*                        &
+#    endif
+     &                          CO2a_Flx*fiter
+            DiaBio2d(i,j,ipCO2a)=pCO2a(i)
+#    ifdef WET_DRY
+            DiaBio2d(i,j,ipCO2a)=DiaBio2d(i,j,ipCO2a)*rmask_full(i,j)
+#    endif
+#   endif
+# endif
+! end ALedit
           END DO
 #endif
 !
