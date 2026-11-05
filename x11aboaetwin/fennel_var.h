@@ -47,6 +47,14 @@
             idTvar(iLDeC)=varid
           CASE ('idTvar(iSDeC)')
             idTvar(iSDeC)=varid
+! ALedit to add twin vars
+# ifdef TALK_ADDITION
+          CASE ('idTvar(idTIC)')
+            idTvar(idTIC)=varid
+          CASE ('idTvar(idTA)')
+            idTvar(idTA)=varid
+# endif
+! end ALedit
 #endif
 #ifdef OXYGEN
           CASE ('idTvar(iOxyg)')
@@ -95,6 +103,14 @@
             idTads(iLDeC)=varid
           CASE ('idTads(iSDeC)')
             idTads(iSDeC)=varid
+! ALedit to add twin vars
+#  ifdef TALK_ADDITION
+          CASE ('idTads(idTIC)')
+            idTads(idTIC)=varid
+          CASE ('idTads(idTA')
+            idTads(idTA)=varid
+#  endif
+! end ALedit
 # endif
 # ifdef OXYGEN
           CASE ('idTads(iOxyg)')
@@ -223,6 +239,28 @@
             idTbry(isouth,iTAlk)=varid
           CASE ('idTbry(inorth,iTAlk)')
             idTbry(inorth,iTAlk)=varid
+
+! ALedit to add twin vars
+# ifdef TALK_ADDITION
+          CASE ('idTbry(iwest,idTIC)')
+            idTbry(iwest,idTIC)=varid
+          CASE ('idTbry(ieast,idTIC)')
+            idTbry(ieast,idTIC)=varid
+          CASE ('idTbry(isouth,idTIC)')
+            idTbry(isouth,idTIC)=varid
+          CASE ('idTbry(inorth,idTIC)')
+            idTbry(inorth,idTIC)=varid
+
+          CASE ('idTbry(iwest,idTA)')
+            idTbry(iwest,idTA)=varid
+          CASE ('idTbry(ieast,idTA)')
+            idTbry(ieast,idTA)=varid
+          CASE ('idTbry(isouth,idTA)')
+            idTbry(isouth,idTA)=varid
+          CASE ('idTbry(inorth,idTA)')
+            idTbry(inorth,idTA)=varid
+# endif
+! end ALedit
 #endif
 #ifdef OXYGEN
           CASE ('idTbry(iwest,iOxyg)')
@@ -286,6 +324,14 @@
             idRtrc(iLDeC)=varid
           CASE ('idRtrc(iSDeC)')
             idRtrc(iSDeC)=varid
+! ALedit to add twin vars
+# ifdef TALK_ADDITION
+          CASE ('idRtrc(idTIC)')
+            idRtrc(idTIC)=varid
+          CASE ('idRtrc(idTA)')
+            idRtrc(idTA)=varid
+# endif
+! end ALedit
 #endif
 #ifdef OXYGEN
           CASE ('idRtrc(iOxyg)')
@@ -312,10 +358,22 @@
             iDbio2(iDNIT)=varid
 # endif
 # ifdef CARBON
-          CASE ('iDbio2(iCOfx)')
-            iDbio2(iCOfx)=varid
-          CASE ('iDbio2(ipCO2)')
-            iDbio2(ipCO2)=varid
+! ALedit to define control and addition
+          !CASE ('iDbio2(iCOfx)')
+          !  iDbio2(iCOfx)=varid
+          !CASE ('iDbio2(ipCO2)')
+          !  iDbio2(ipCO2)=varid
+          CASE ('iDbio2(iCfxc)')
+            iDbio2(iCfxc)=varid
+          CASE ('iDbio2(ipCO2c)')
+            iDbio2(ipCO2c)=varid
+#  ifdef TALK_ADDITION
+          CASE ('iDbio2(iCfxa)')
+            iDbio2(iCfxa)=varid
+          CASE ('iDbio2(ipCO2a)')
+            iDbio2(ipCO2a)=varid
+#  endif
+! end ALedit
 # endif
 # ifdef OXYGEN
           CASE ('iDbio2(iO2fx)')
