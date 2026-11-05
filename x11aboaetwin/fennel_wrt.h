@@ -204,3 +204,43 @@
      &                      pCO2air(ng), (/0/), (/0/),                  &
      &                      ncid = ncid)
       IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+! ALedit to add alkalinity addition from .in file
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+      CALL netcdf_put_fvar (ng, model, ncname, 'iloc_alkalinity',        &
+     &                      iloc_alkalinity(ng), (/0/), (/0/),           &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      CALL netcdf_put_fvar (ng, model, ncname, 'jloc_alkalinity',        &
+     &                      jloc_alkalinity(ng), (/0/), (/0/),           &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      CALL netcdf_put_fvar (ng, model, ncname, 'kloc_alkalinity_min',    &
+     &                      kloc_alkalinity_min(ng), (/0/), (/0/),       &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+     
+      CALL netcdf_put_fvar (ng, model, ncname, 'kloc_alkalinity_max',    &
+     &                      kloc_alkalinity_max(ng), (/0/), (/0/),       &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+
+      CALL netcdf_put_fvar (ng, model, ncname, 'alkalinity_load',        &
+     &                      alkalinity_load(ng), (/0/), (/0/),           &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      CALL netcdf_put_fvar (ng, model, ncname, 'alkalinity_startload',   &
+     &                      alkalinity_startload(ng), (/0/), (/0/),      &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      CALL netcdf_put_fvar (ng, model, ncname, 'alkalinity_endload',     &
+     &                      alkalinity_endload(ng), (/0/), (/0/),        &
+     &                      ncid = ncid)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+# endif
+#endif
+! end ALedit
