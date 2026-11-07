@@ -62,6 +62,25 @@
 !   ZooMin   Zooplankton minimum threshold value [mmol_N/m3].          !
 !   ZooMR    Zooplankton mortality to Detritus [1/day].                !
 !   pCO2air  CO2 partial pressure in the air [ppmv].                   !
+! ALedit to add alkalinity addition parameters                         !
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+!   iloc_alkalinity   longitude (i) index of the model grid cell where !
+!                     alkalinity is added                              !
+!   jloc_alkalinity   latitude (j) index of the model grid cell where  !
+!                     alkalinity is added                              !
+!   kloc_alkalinity_min   minimum vertical (k) index of the model grid !
+!                     cell where alkalinity is added                   !
+!   kloc_alkalinity_max   maximum vertical (k) index of the model grid !
+!                     cell where alkalinity is added                   !
+!   alkalinity_load   alkalinity added to the grid cell per day        !
+!                     [mol/second].                                    !
+!   alkalinity_startload   starting day of alkalinity load             !
+!   alkalinity_endload     ending day of alkalinity load               !
+# endif
+!                                                                      !
+#endif
+! end ALedit                                                           !
 !                                                                      !
 !=======================================================================
 !
@@ -97,6 +116,12 @@
 #ifdef OXYGEN
       integer :: iOxyg                  ! Dissolved oxygen concentration
 #endif
+! ALedit to add indices for twin vars
+#ifdef TALK_ADDITION
+      integer :: idTIC                   ! delta TIC
+      integer :: idTA                    ! delta TA
+#endif
+! end ALedit
 
 #if defined DIAGNOSTICS && defined DIAGNOSTICS_BIO
 !
@@ -104,9 +129,18 @@
 !
       integer, allocatable :: iDbio2(:)       ! 2D biological terms
 
-      integer  :: iCOfx                       ! air-sea CO2 flux
+! ALedit to add control and addition
+      !integer  :: iCOfx                       ! air-sea CO2 flux
+      !integer  :: iDNIT                       ! denitrification flux
+      !integer  :: ipCO2                       ! partial pressure of CO2
       integer  :: iDNIT                       ! denitrification flux
-      integer  :: ipCO2                       ! partial pressure of CO2
+      integer  :: iCfxc                       ! air-sea CO2 flux (control)
+      integer  :: ipCO2c                      ! partial pressure of CO2 (control)
+# ifdef TALK_ADDITION
+      integer  :: iCfxa                       ! air-sea CO2 flux (addition)
+      integer  :: ipCO2a                      ! partial pressure of CO2 (addition)
+# endif
+! end ALedit
       integer  :: iO2fx                       ! air-sea O2 flux
 !
 !  Biological 3D diagnostic variable IDs.
@@ -162,6 +196,19 @@
       real(r8), allocatable :: ZooMR(:)              ! 1/day
       real(r8), allocatable :: pCO2air(:)            ! ppmv
 !
+! ALedit to add alkalinity addition (if no .nc OAE file)
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+      real(r8), allocatable :: iloc_alkalinity(:)
+      real(r8), allocatable :: jloc_alkalinity(:)
+      real(r8), allocatable :: kloc_alkalinity_min(:)
+      real(r8), allocatable :: kloc_alkalinity_max(:)
+      real(r8), allocatable :: alkalinity_load(:)
+      real(r8), allocatable :: alkalinity_startload(:)
+      real(r8), allocatable :: alkalinity_endload(:)
+# endif
+#endif
+! end ALedit
       CONTAINS
 !
       SUBROUTINE initialize_biology
@@ -176,33 +223,84 @@
 !  Local variable declarations
 !
       integer :: i, ic
+! ALedit to add number of alkalinity feedstocks
+#ifdef TALK_ADDITION
+      integer :: ntap
+      ntap=1
+#endif
+! end ALedit
 !
 !-----------------------------------------------------------------------
 !  Determine number of biological tracers.
 !-----------------------------------------------------------------------
 !
+! ALedit to modify NBT based on alkalinity addition
 #ifdef CARBON
-# ifdef OXYGEN
-#  if defined PO4 && defined RIVER_DON
+# ifdef TALK_ADDITION
+#  ifdef OXYGEN
+#   if defined PO4 && defined RIVER_DON
+      NBT=17
+#   elif defined RIVER_DON && !defined PO4
+      NBT=16
+#   elif defined PO4 && !defined RIVER_DON
       NBT=15
-#  elif defined RIVER_DON && !defined PO4
+#   else
       NBT=14
-#  elif defined PO4 && !defined RIVER_DON
-      NBT=13
+#   endif
 #  else
-      NBT=12
+#   if defined PO4 && defined RIVER_DON
+      NBT=16
+#   elif defined RIVER_DON && !defined PO4
+      NBT=15
+#   elif defined PO4 && !defined RIVER_DON
+      NBT=14
+#   else
+      NBT=13
 #  endif
 # else
-#  if defined PO4 && defined RIVER_DON
+#  ifdef OXYGEN
+#   if defined PO4 && defined RIVER_DON
+      NBT=15
+#   elif defined RIVER_DON && !defined PO4
       NBT=14
-#  elif defined RIVER_DON && !defined PO4
+#   elif defined PO4 && !defined RIVER_DON
       NBT=13
-#  elif defined PO4 && !defined RIVER_DON
+#   else
       NBT=12
+#   endif
 #  else
+#   if defined PO4 && defined RIVER_DON
+      NBT=14
+#   elif defined RIVER_DON && !defined PO4
+      NBT=13
+#   elif defined PO4 && !defined RIVER_DON
+      NBT=12
+#   else
       NBT=11
 #  endif
 # endif
+! # ifdef OXYGEN
+! #  if defined PO4 && defined RIVER_DON
+!       NBT=15
+! #  elif defined RIVER_DON && !defined PO4
+!       NBT=14
+! #  elif defined PO4 && !defined RIVER_DON
+!       NBT=13
+! #  else
+!       NBT=12
+! #  endif
+! # else
+! #  if defined PO4 && defined RIVER_DON
+!       NBT=14
+! #  elif defined RIVER_DON && !defined PO4
+!       NBT=13
+! #  elif defined PO4 && !defined RIVER_DON
+!       NBT=12
+! #  else
+!       NBT=11
+! #  endif
+! # endif
+! end ALedit
 #else
 # ifdef OXYGEN
 #  if defined PO4 && defined RIVER_DON
@@ -238,6 +336,11 @@
 # endif
 # ifdef CARBON
       NDbio2d=NDbio2d+2
+! ALedit to add diagnostics (two more for addition run)
+#  ifdef TALK_ADDITION
+      NDbio2d=NDbio2d+2
+#  endif
+! end ALedit
 # endif
 # ifdef OXYGEN
       NDbio2d=NDbio2d+1
@@ -251,8 +354,19 @@
       ic=ic+1
 # endif
 # ifdef CARBON
-      iCOfx=ic+1
-      ipCO2=ic+2
+! ALedit to add control and addition
+#  ifdef TALK_ADDITION
+      iCfxc=ic+1
+      iCfxa=ic+2
+      ipCO2c=ic+3
+      ipCO2a=ic+4
+      ic=ic+4
+#  else
+      iCfxc=ic+1
+      ipCO2c=ic+2
+!      iCOfx=ic+1
+!      ipCO2=ic+2
+! end ALedit
       ic=ic+2
 # endif
 # ifdef OXYGEN
@@ -463,6 +577,40 @@
         allocate ( pCO2air(Ngrids) )
         Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
       END IF
+! ALedit to allocate module vars for alkalinity addition
+#ifdef TALK_ADDITION
+# ifndef TALK_FILE
+      IF (.not.allocated(iloc_alkalinity)) THEN
+            allocate ( iloc_alkalinity(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(jloc_alkalinity)) THEN
+            allocate ( jloc_alkalinity(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(kloc_alkalinity_min)) THEN
+            allocate ( kloc_alkalinity_min(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(kloc_alkalinity_max)) THEN
+            allocate ( kloc_alkalinity_max(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(alkalinity_load)) THEN
+            allocate ( alkalinity_load(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(alkalinity_startload)) THEN
+            allocate ( alkalinity_startload(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+      IF (.not.allocated(alkalinity_endload)) THEN
+            allocate ( alkalinity_endload(Ngrids) )
+            Dmem(1)=Dmem(1)+REAL(Ngrids,r8)
+      END IF
+# endif
+#endif
+! end ALedit
 !
 !  Allocate biological tracer vector.
 !
@@ -516,6 +664,13 @@
       iTIC_=ic+3
       iTAlk=ic+4
       ic=ic+4
+! ALedit to add dTIC and dTA
+#  ifdef TALK_ADDITION
+      idTIC=ic+1
+      idTA=ic+2
+      ic=ic+2
+#  endif
+! end ALedit 
 #  ifdef RIVER_DON
       iRDeC=ic+1
       ic=ic+1
