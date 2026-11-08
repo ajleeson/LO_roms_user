@@ -190,7 +190,9 @@ export     MY_PROJECT_DIR=${PWD}
 # computers.
 
 #export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
-export       MY_ROMS_SRC=${MY_ROOT_DIR}/LO_roms_source_git
+#export       MY_ROMS_SRC=${MY_ROOT_DIR}/LO_roms_source_git
+export       MY_ROMS_SRC=${MY_ROOT_DIR}/LO_roms_source_twinOAE
+
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
@@ -241,8 +243,8 @@ fi
 
 #export        USE_OpenMP=on            # shared-memory parallelism
 
-#export              FORT=ifx
- export              FORT=ifort
+export              FORT=ifx
+#export              FORT=ifort
 #export              FORT=gfortran
 #export              FORT=pgi
 
