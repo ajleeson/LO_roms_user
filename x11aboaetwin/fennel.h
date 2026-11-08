@@ -200,7 +200,7 @@
 #endif
 ! end ALedit
 
-     #if defined CARBON || defined OXYGEN
+#if defined CARBON || defined OXYGEN
 # ifdef BULK_FLUXES
      &                  FORCES(ng) % Uwind,                             &
      &                  FORCES(ng) % Vwind,                             &
