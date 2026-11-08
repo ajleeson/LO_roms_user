@@ -58,6 +58,9 @@
 #  define INCREASE_ATTSW  /*jx*/
 #  undef INCREASE_NO3LOSS /*jx*/
 #  define BURY           /*jx*/
+/* ALedit to add alk twin variables */
+#  define TALK_ADDITION
+/* end ALedit */
 #endif
 
 #define GLS_MIXING
