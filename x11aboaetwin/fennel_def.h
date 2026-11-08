@@ -314,3 +314,56 @@
      &               1, (/0/), Aval, Vinfo, ncname,                     &
      &               SetParAccess = .FALSE.)
       IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+! ALedit to add alk addition params
+#ifdef TALK_ADDITION
+      Vinfo( 1)='iloc_alkalinity'
+      Vinfo( 2)='longitude (i) index of the model grid cell where alkalinity is added'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      Vinfo( 1)='jloc_alkalinity'
+      Vinfo( 2)='latitude (j) index of the model grid cell where alkalinity is added'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      Vinfo( 1)='kloc_alkalinity_min'
+      Vinfo( 2)='minimum vertical (k) index of the model grid cell where alkalinity is added'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+
+      Vinfo( 1)='kloc_alkalinity_max'
+      Vinfo( 2)='maximum vertical (k) index of the model grid cell where alkalinity is added'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+
+      Vinfo( 1)='alkalinity_load'
+      Vinfo( 2)='alkalinity added to the grid cell'
+      Vinfo( 3)='mol/second' 
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      Vinfo( 1)='alkalinity_startload'
+      Vinfo( 2)='starting day of alkalinity load'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+      
+      Vinfo( 1)='alkalinity_endload'
+      Vinfo( 2)='ending day of alkalinity load'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (FoundError(exit_flag, NoError, __LINE__, MyFile)) RETURN
+#endif
+! end ALedit
