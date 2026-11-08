@@ -256,6 +256,7 @@
       NBT=14
 #   else
       NBT=13
+#   endif
 #  endif
 # else
 #  ifdef OXYGEN
@@ -277,6 +278,7 @@
       NBT=12
 #   else
       NBT=11
+#   endif
 #  endif
 # endif
 ! # ifdef OXYGEN
@@ -368,6 +370,7 @@
 !      ipCO2=ic+2
 ! end ALedit
       ic=ic+2
+#  endif
 # endif
 # ifdef OXYGEN
       iO2fx=ic+1
