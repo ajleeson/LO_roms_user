@@ -107,7 +107,7 @@
 #  ifdef TALK_ADDITION
           CASE ('idTads(idTIC)')
             idTads(idTIC)=varid
-          CASE ('idTads(idTA')
+          CASE ('idTads(idTA)')
             idTads(idTA)=varid
 #  endif
 ! end ALedit

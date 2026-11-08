@@ -2421,6 +2421,28 @@ metadata:
     add_offset:     0.0d0
     scale:          1.0d0
 
+  - variable:       river_dTIC                                       # Input
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_transport_into_sea_water_from_rivers
+    long_name:      river runoff dTIC concentration
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          river dTIC
+    time:           river_time
+    index_code:     idRtrc(idTIC)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       river_dTA                                        # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      river runoff dTA concentration
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          river dTA
+    time:           river_time
+    index_code:     idRtrc(idTA)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
   - variable:       river_mud_                                       # Input
     standard_name:  mass_concetration_of_mud_
     long_name:      river runoff suspended sediment concentration
@@ -4312,6 +4334,61 @@ metadata:
     add_offset:     0.0d0
     scale:          1.0d0
 
+  - variable:       dTIC                                             # Input/Output
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_in_sea_water
+    long_name:      dTIC concentration
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          dTIC
+    time:           ocean_time
+    index_code:     idTvar(idTIC)
+    type:           r3dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTA                                              # Input/Output
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      dTA concentration
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          dTA
+    time:           ocean_time
+    index_code:     idTvar(idTA)
+    type:           r3dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       add_dTA                                           # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      source addition dTA
+    units:          mole second-1                                    # [mole/s]
+    field:          source addition dTA
+    time:           add_time
+    index_code:     idAtrc
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       add_kmin                                          # Input
+    standard_name:  source_addition_minimum_s_level
+    long_name:      source addition minimum s-level
+    units:          nondimensional
+    field:          source addition minimum s-level
+    time:           add_time
+    index_code:     idkmin
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       add_kmax                                          # Input
+    standard_name:  source_addition_maximum_s_level
+    long_name:      source addition maximum s-level
+    units:          nondimensional
+    field:          source addition maximum s-level
+    time:           add_time
+    index_code:     idkmax
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
   - variable:       LdetritusC                                       # Input/Output
     standard_name:  mole_concentration_of_large_detritus_expressed_as_carbon_in_sea_water
     long_name:      large carbon-detritus concentration
@@ -4420,6 +4497,50 @@ metadata:
     field:          pCO2
     time:           ocean_time
     index_code:     iDbio2(ipCO2)
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       CO2c_airsea                                      # Input/Output
+    standard_name:  surface_mole_concentration_flux_of_carbon_dioxide_between_air_and_sea_water
+    long_name:      control CO2 air-sea flux
+    units:          millimole_carbon meter-2 day-1                   # [millimole/m2/day]
+    field:          control CO2 air-sea flux
+    time:           ocean_time
+    index_code:     iDbio2(iCfxc)
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       CO2a_airsea                                      # Input/Output
+    standard_name:  surface_mole_concentration_flux_of_carbon_dioxide_between_air_and_sea_water
+    long_name:      addition CO2 air-sea flux
+    units:          millimole_carbon meter-2 day-1                   # [millimole/m2/day]
+    field:          addition CO2 air-sea flux
+    time:           ocean_time
+    index_code:     iDbio2(iCfxa)
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       pCO2c                                            # Input/Output
+    standard_name:  partial_pressure_of_carbon_dioxide_in_sea_water
+    long_name:      partial pressure of CO2 in control
+    units:          microatmophere                                   # [microatmosphere]
+    field:          pCO2c
+    time:           ocean_time
+    index_code:     iDbio2(ipCO2c)
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       pCO2a                                            # Input/Output
+    standard_name:  partial_pressure_of_carbon_dioxide_in_sea_water
+    long_name:      partial pressure of CO2 in addition
+    units:          microatmophere                                   # [microatmosphere]
+    field:          pCO2a
+    time:           ocean_time
+    index_code:     iDbio2(ipCO2a)
     type:           r2dvar
     add_offset:     0.0d0
     scale:          1.0d0
@@ -4598,6 +4719,94 @@ metadata:
     field:          TIC northern-boundary
     time:           TIC_time
     index_code:     idTbry(inorth,iTIC_)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTIC_east                                        # Input
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_in_sea_water
+    long_name:      dTIC eastern boundary condition
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          dTIC eastern-boundary
+    time:           bry_time
+    index_code:     idTbry(ieast,idTIC)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTIC_west                                        # Input
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_in_sea_water
+    long_name:      dTIC western boundary condition
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          dTIC western-boundary
+    time:           bry_time
+    index_code:     idTbry(iwest,idTIC)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTIC_south                                       # Input
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_in_sea_water
+    long_name:      dTIC southern boundary condition
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          dTIC southern-boundary
+    time:           bry_time
+    index_code:     idTbry(isouth,idTIC)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTIC_north                                       # Input
+    standard_name:  mole_concentration_of_dissolved_inorganic_carbon_in_sea_water
+    long_name:      dTIC northern boundary condition
+    units:          millimole_carbon meter-3                         # [millimole/m3]
+    field:          dTIC northern-boundary
+    time:           bry_time
+    index_code:     idTbry(inorth,idTIC)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTA_east                                         # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      dTA eastern boundary condition
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          dTA eastern-boundary
+    time:           bry_time
+    index_code:     idTbry(ieast,idTA)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTA_west                                         # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      dTA western boundary condition
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          dTA western-boundary
+    time:           bry_time
+    index_code:     idTbry(iwest,idTA)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTA_south                                        # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      dTA southern boundary condition
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          dTA southern-boundary
+    time:           bry_time
+    index_code:     idTbry(isouth,idTA)
+    type:           nulvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       dTA_north                                        # Input
+    standard_name:  sea_water_alkalinity_expressed_as_mole_equivalent
+    long_name:      dTA northern boundary condition
+    units:          milliequivalents meter-3                         # [milliequivalents/m3]
+    field:          dTA northern-boundary
+    time:           bry_time
+    index_code:     idTbry(inorth,idTA)
     type:           nulvar
     add_offset:     0.0d0
     scale:          1.0d0
