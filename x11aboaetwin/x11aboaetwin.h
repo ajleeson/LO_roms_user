@@ -60,6 +60,7 @@
 #  define BURY           /*jx*/
 /* ALedit to add alk twin variables */
 #  define TALK_ADDITION
+#  define DIAGNOSTICS_BIO
 /* end ALedit */
 #endif
 
