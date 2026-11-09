@@ -814,7 +814,7 @@
 #endif
 ! end ALedit
 
-     #ifdef TS_DIF2
+#ifdef TS_DIF2
             DO itrc=1,NBT
               i=idbio(itrc)
               WRITE (out,100) nl_tnu2(i,ng), 'nl_tnu2', i,              &
