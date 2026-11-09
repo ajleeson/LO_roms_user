@@ -415,15 +415,18 @@ fi
 # Compile (the binary will go to BINDIR set above).
 
 if [ $dprint -eq 1 ]; then
-  make $debug
+  # make $debug
+  make FC=mpiifx $debug
 else
   echo ""
   echo "Compiling ROMS source code:"
   echo ""
   if [ $parallel -eq 1 ]; then
-    make $NCPUS
+    # make $NCPUS
+    make FC=mpiifx $NCPUS
   else
-    make
+    # make
+    make FC=mpiifx
   fi
 
   HEADER=`echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
