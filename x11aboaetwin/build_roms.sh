@@ -399,6 +399,30 @@ else
   cd ${MY_ROMS_SRC}
 fi
 
+# ALedit following co-pilot suggestion. Hide the original ROMS source code files
+# with _OG.F suffixes (which was causing compiling errors)
+# ROMS discovers Fortran sources with *.F wildcards. Temporarily hide the
+# preserved originals so files such as set_diags_OG.F are not compiled.
+declare -a OG_BACKUPS
+while IFS= read -r -d '' backup; do
+  hidden="${backup}.roms_backup"
+  mv "${backup}" "${hidden}"
+  OG_BACKUPS+=("${hidden}"$'\t'"${backup}")
+done < <(find "${MY_ROMS_SRC}" -type f -name '*_OG.F' -print0)
+
+restore_og_backups() {
+  local entry hidden backup
+  for entry in "${OG_BACKUPS[@]}"; do
+    hidden="${entry%%	*}"
+    backup="${entry#*	}"
+    if [ -e "${hidden}" ]; then
+      mv "${hidden}" "${backup}"
+    fi
+  done
+}
+
+trap restore_og_backups EXIT
+
 #--------------------------------------------------------------------------
 # Compile.
 #--------------------------------------------------------------------------
