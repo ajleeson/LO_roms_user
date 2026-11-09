@@ -2139,7 +2139,7 @@
 #endif
 ! end ALedit
 
-            #ifdef DIAGNOSTICS_UV
+#ifdef DIAGNOSTICS_UV
           CASE ('idDu2d(M2pgrd)')
             idDu2d(M2pgrd)=varid
           CASE ('idDv2d(M2pgrd)')
